@@ -86,10 +86,6 @@ public class InputReader : ScriptableObject, IPlayerActions
         {
             ReloadEvent?.Invoke(true);
         }
-        else if (context.canceled)
-        {
-            ReloadEvent?.Invoke(false);
-        }
     }
 
     public void OnSwap(InputAction.CallbackContext context)
@@ -97,10 +93,6 @@ public class InputReader : ScriptableObject, IPlayerActions
         if (context.performed)
         {
             SwapEvent?.Invoke(true);
-        }
-        else if (context.canceled)
-        {
-            SwapEvent?.Invoke(false);
         }
     }
 
