@@ -7,9 +7,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player")]
     public float MoveSpeed = 4.0f;
-    public float SprintSpeed = 6.0f;
     public float RotationSpeed = 1.0f;
-    public float SpeedChangeRate = 10.0f;
 
     [Space(10)]
     public float JumpHeight = 1.2f;
@@ -47,7 +45,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 move;
     private Vector2 look;
     private bool jumpPressed;
-    private bool sprintPressed;
 
 
     private CharacterController controller;
@@ -83,7 +80,6 @@ public class PlayerController : MonoBehaviour
         input.MoveEvent += OnMove;
         input.LookEvent += OnLook;
         input.JumpEvent += OnJump;
-        input.SprintEvent += OnSprint;
     }
 
     private void OnDisable()
@@ -91,7 +87,6 @@ public class PlayerController : MonoBehaviour
         input.MoveEvent -= OnMove;
         input.LookEvent -= OnLook;
         input.JumpEvent -= OnJump;
-        input.SprintEvent -= OnSprint;
     }
 
     private void OnMove(Vector2 newMoveDirection)
@@ -105,10 +100,6 @@ public class PlayerController : MonoBehaviour
     private void OnJump(bool newJumpState)
     {
         jumpPressed = newJumpState;
-    }
-    private void OnSprint(bool newSprintState)
-    {
-        sprintPressed = newSprintState;
     }
 
     private void Update()
@@ -154,7 +145,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
-        float targetSpeed = sprintPressed ? SprintSpeed : MoveSpeed;
+        float targetSpeed = MoveSpeed;
 
         // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -165,23 +156,9 @@ public class PlayerController : MonoBehaviour
         // a reference to the players current horizontal velocity
         float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
 
-        float speedOffset = 0.1f;
         float inputMagnitude = input.analogMovement ? move.magnitude : 1f;
 
-        // accelerate or decelerate to target speed
-        if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
-        {
-            // creates curved result rather than a linear one giving a more organic speed change
-            // note T in Lerp is clamped, so we don't need to clamp our speed
-            speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
-
-            // round speed to 3 decimal places
-            speed = Mathf.Round(speed * 1000f) / 1000f;
-        }
-        else
-        {
-            speed = targetSpeed;
-        }
+        speed = targetSpeed;
 
         // normalise input direction
         Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;

@@ -18,7 +18,7 @@ MonoBehaviour:
   MaxAmmo: 360
   MaxClipAmmo: 30
   ReloadTime: 2
-  FireRate: 0.01666667
+  FireRate: 0.1666667
   PrechargeTime: 0
   Damage: 0
   Range: 0
