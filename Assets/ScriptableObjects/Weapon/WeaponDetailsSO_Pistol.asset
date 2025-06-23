@@ -14,14 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HasInfiniteAmmo: 1
   HasInfiniteClipAmmo: 0
-  IsAutomatic: 0
   MaxAmmo: 0
   MaxClipAmmo: 10
   ReloadTime: 1
   FireRate: 0.25
   PrechargeTime: 0
-  Damage: 0
-  Range: 0
+  Damage: 40
+  Range: 10
   RecoilDir: {x: -1, y: 1}
   RecoilStrength: 2
   RecoilReturnSpeed: 0

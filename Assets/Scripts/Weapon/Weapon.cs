@@ -16,6 +16,7 @@ public class Weapon : MonoBehaviour
     protected bool isFiring = false;
     protected bool isReloading = false;
     protected int shootString = Animator.StringToHash("Shoot");
+    protected int reloadString = Animator.StringToHash("Reload");
 
     public virtual void Shoot()
     {
@@ -40,6 +41,7 @@ public class Weapon : MonoBehaviour
             firePrechargeTimer = weaponDetails.PrechargeTime;
             muzzleFlash?.Play();
             animator.SetTrigger(shootString);
+            FireAmmo();
         }
         else
         {
@@ -56,6 +58,7 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
+        animator.SetTrigger(reloadString);
         StartCoroutine(ReloadCoroutine());
     }
 
@@ -125,5 +128,19 @@ public class Weapon : MonoBehaviour
             currentAmmo -= ammoToReload;
         }
         isReloading = false;
+    }
+
+    private void FireAmmo()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, weaponDetails.Range))
+        {
+            Health health = hit.collider.GetComponent<Health>();
+            if (health != null)
+            {
+                Debug.Log("Hit " + hit.collider.name);
+                health.TakeDamage(weaponDetails.Damage);
+            }
+        }
     }
 }
