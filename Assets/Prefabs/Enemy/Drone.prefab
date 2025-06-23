@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  maxHealth: 100
+  maxHealth: 40
 --- !u!195 &5018550630977238471
 NavMeshAgent:
   m_ObjectHideFlags: 0

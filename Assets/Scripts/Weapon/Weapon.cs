@@ -18,6 +18,10 @@ public class Weapon : MonoBehaviour
     protected int shootString = Animator.StringToHash("Shoot");
     protected int reloadString = Animator.StringToHash("Reload");
 
+    public event Action<Weapon> OnWeaponEquipped;
+    public event Action<int> OnClipAmmoChanged;
+    public event Action<int> OnAmmoChanged;
+
     public virtual void Shoot()
     {
         if (IsWeaponReadyToShoot())
@@ -30,11 +34,7 @@ public class Weapon : MonoBehaviour
             if (!weaponDetails.HasInfiniteClipAmmo)
             {
                 currentClipAmmo--;
-            }
 
-            if (!weaponDetails.HasInfiniteAmmo)
-            {
-                currentAmmo--;
             }
 
             fireRateCooldownTimer = weaponDetails.FireRate;
@@ -69,15 +69,18 @@ public class Weapon : MonoBehaviour
 
         if (currentAmmo == 0 && !weaponDetails.HasInfiniteAmmo)
         {
-            currentAmmo = weaponDetails.MaxAmmo;
+            int ammoToLoad = weaponDetails.MaxAmmo;
+            ChangeAmmo(ammoToLoad);
         }
 
         if (currentClipAmmo == 0 && !weaponDetails.HasInfiniteClipAmmo)
         {
             int ammoToLoad = Mathf.Min(weaponDetails.MaxClipAmmo, currentAmmo);
-            currentClipAmmo = ammoToLoad;
-            currentAmmo -= ammoToLoad;
+            ChangeClipAmmo(ammoToLoad);
+            ChangeAmmo(-ammoToLoad);
         }
+        OnWeaponEquipped?.Invoke(this);
+        Debug.Log($"Equipped {weaponDetails.name}. Current Ammo: {currentAmmo}, Current Clip Ammo: {currentClipAmmo}");
     }
 
     public virtual void Unequip()
@@ -98,6 +101,11 @@ public class Weapon : MonoBehaviour
 
     public bool IsWeaponReadyToShoot()
     {
+        if (isReloading)
+        {
+            return false;
+        }
+
         if (!weaponDetails.HasInfiniteClipAmmo && currentClipAmmo <= 0)
         {
             return false;
@@ -119,13 +127,15 @@ public class Weapon : MonoBehaviour
 
         if (weaponDetails.HasInfiniteAmmo)
         {
-            currentClipAmmo = weaponDetails.MaxClipAmmo;
+            int amountToMax = weaponDetails.MaxClipAmmo - currentClipAmmo;
+            ChangeClipAmmo(amountToMax);
+
         }
         else
         {
             int ammoToReload = Mathf.Min(ammoNeeded, currentAmmo);
-            currentClipAmmo += ammoToReload;
-            currentAmmo -= ammoToReload;
+            ChangeClipAmmo(ammoToReload);
+            ChangeAmmo(-ammoToReload);
         }
         isReloading = false;
     }
@@ -142,5 +152,17 @@ public class Weapon : MonoBehaviour
                 health.TakeDamage(weaponDetails.Damage);
             }
         }
+    }
+
+    private void ChangeClipAmmo(int amount)
+    {
+        currentClipAmmo += amount;
+        OnClipAmmoChanged?.Invoke(currentClipAmmo);
+    }
+
+    private void ChangeAmmo(int amount)
+    {
+        currentAmmo += amount;
+        OnAmmoChanged?.Invoke(currentAmmo);
     }
 }

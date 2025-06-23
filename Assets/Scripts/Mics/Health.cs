@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     public event Action<int> OnHealthChanged;
     public event Action OnPlayerDied;
     public event Action OnEnemyDied;
+    public static event Action OnAnyEnemyDied;
  
 
     private void Start()
@@ -31,11 +32,12 @@ public class Health : MonoBehaviour
         if (isPlayer)
         {
             OnPlayerDied?.Invoke();
-            
+
         }
         else
         {
             OnEnemyDied?.Invoke();
+            OnAnyEnemyDied?.Invoke();
         }
     }
 }

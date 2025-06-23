@@ -33,4 +33,9 @@ public abstract class Enemy : MonoBehaviour
         Debug.Log($"{gameObject.name} has died.");
         Destroy(gameObject);
     }
+
+    public Health GetHealth()
+    {
+        return health;
+    }
 }
