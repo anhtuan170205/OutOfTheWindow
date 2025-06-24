@@ -18,9 +18,9 @@ public class Weapon : MonoBehaviour
     protected int shootString = Animator.StringToHash("Shoot");
     protected int reloadString = Animator.StringToHash("Reload");
 
-    public event Action<Weapon> OnWeaponEquipped;
-    public event Action<int> OnClipAmmoChanged;
-    public event Action<int> OnAmmoChanged;
+    public static event Action<Weapon> OnWeaponEquipped;
+    public static event Action<int> OnClipAmmoChanged;
+    public static event Action<int> OnAmmoChanged;
 
     public virtual void Shoot()
     {
@@ -33,8 +33,7 @@ public class Weapon : MonoBehaviour
 
             if (!weaponDetails.HasInfiniteClipAmmo)
             {
-                currentClipAmmo--;
-
+                ChangeClipAmmo(-1);
             }
 
             fireRateCooldownTimer = weaponDetails.FireRate;
@@ -50,7 +49,6 @@ public class Weapon : MonoBehaviour
                 Reload();
             }
         }
-        Debug.Log($"Shooting {weaponDetails.name}. Current Ammo: {currentAmmo}, Current Clip Ammo: {currentClipAmmo}");
     }
     public virtual void Reload()
     {
@@ -72,6 +70,10 @@ public class Weapon : MonoBehaviour
             int ammoToLoad = weaponDetails.MaxAmmo;
             ChangeAmmo(ammoToLoad);
         }
+        else
+        {
+            OnAmmoChanged?.Invoke(currentAmmo);
+        }
 
         if (currentClipAmmo == 0 && !weaponDetails.HasInfiniteClipAmmo)
         {
@@ -79,9 +81,14 @@ public class Weapon : MonoBehaviour
             ChangeClipAmmo(ammoToLoad);
             ChangeAmmo(-ammoToLoad);
         }
+        else
+        {
+            OnClipAmmoChanged?.Invoke(currentClipAmmo);
+        }
+
         OnWeaponEquipped?.Invoke(this);
-        Debug.Log($"Equipped {weaponDetails.name}. Current Ammo: {currentAmmo}, Current Clip Ammo: {currentClipAmmo}");
     }
+
 
     public virtual void Unequip()
     {

@@ -6,11 +6,10 @@ public class Health : MonoBehaviour
     [SerializeField] private bool isPlayer;
     [SerializeField] private int maxHealth;
     private int currentHealth;
-    public event Action<int> OnHealthChanged;
+    public static event Action<int> OnPlayerHealthChanged;
     public event Action OnPlayerDied;
     public event Action OnEnemyDied;
-    public static event Action OnAnyEnemyDied;
- 
+
 
     private void Start()
     {
@@ -19,9 +18,8 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        OnHealthChanged?.Invoke(currentHealth);
-        if (currentHealth <= 0)
+        SetHealth(currentHealth - damage);
+        if (currentHealth == 0)
         {
             Die();
         }
@@ -32,12 +30,28 @@ public class Health : MonoBehaviour
         if (isPlayer)
         {
             OnPlayerDied?.Invoke();
-
         }
         else
         {
             OnEnemyDied?.Invoke();
-            OnAnyEnemyDied?.Invoke();
         }
+    }
+
+    private void SetHealth(int health)
+    {
+        if (health < 0)
+        {
+            health = 0;
+        }
+        currentHealth = health;
+        if (isPlayer)
+        {
+            OnPlayerHealthChanged?.Invoke(currentHealth);
+        }
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }

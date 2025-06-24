@@ -4,15 +4,12 @@ using UnityEngine.AI;
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected Health health;
-    [SerializeField] protected float damage;
-    [SerializeField] protected float attackRange;
-    [SerializeField] protected float attackCooldown;
     [SerializeField] protected NavMeshAgent navMeshAgent;
+    [SerializeField] protected GameObject explosionVFXPrefab;
 
     protected virtual void Update()
     {
         Move();
-        Attack();
     }
 
     public abstract void Move();
@@ -30,7 +27,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void HandleEnemyDied()
     {
-        Debug.Log($"{gameObject.name} has died.");
+        Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
