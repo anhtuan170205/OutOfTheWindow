@@ -20,7 +20,7 @@ MonoBehaviour:
   FireRate: 0.25
   PrechargeTime: 0
   Damage: 40
-  Range: 10
+  Range: 30
   RecoilDir: {x: -1, y: 1}
   RecoilStrength: 2
   RecoilReturnSpeed: 0

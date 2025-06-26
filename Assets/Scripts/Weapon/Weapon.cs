@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected ParticleSystem muzzleFlash;
     [SerializeField] private GameObject WeaponModel;
     [SerializeField] protected Animator animator;
+    [SerializeField] protected LayerMask ignoreLayer;
     protected int currentAmmo;
     protected int currentClipAmmo;
     protected float fireRateCooldownTimer = 0f;
@@ -136,7 +137,6 @@ public class Weapon : MonoBehaviour
         {
             int amountToMax = weaponDetails.MaxClipAmmo - currentClipAmmo;
             ChangeClipAmmo(amountToMax);
-
         }
         else
         {
@@ -150,12 +150,12 @@ public class Weapon : MonoBehaviour
     private void FireAmmo()
     {
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, weaponDetails.Range))
+        int layerMask = ~ignoreLayer.value;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, weaponDetails.Range, layerMask))
         {
             Health health = hit.collider.GetComponent<Health>();
             if (health != null)
             {
-                Debug.Log("Hit " + hit.collider.name);
                 health.TakeDamage(weaponDetails.Damage);
             }
         }

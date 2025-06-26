@@ -9,7 +9,7 @@ public enum DayNightState
 public enum GameState
 {
     MainMenu,
-    Playing,
+    InGame,
     Paused,
     GameOver
 }

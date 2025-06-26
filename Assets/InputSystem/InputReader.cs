@@ -12,6 +12,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event Action<bool> ShootEvent;
     public event Action<bool> ReloadEvent;
     public event Action<bool> SwapEvent;
+    public event Action PauseEvent;
 	public bool analogMovement;
     public bool cursorLocked = true;
     public bool cursorInputForLook = true; 
@@ -83,10 +84,18 @@ public class InputReader : ScriptableObject, IPlayerActions
         }
     }
 
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            PauseEvent?.Invoke();
+        }
+    }
+
     private void OnApplicationFocus(bool hasFocus)
-		{
-			SetCursorState(cursorLocked);
-		}
+    {
+        SetCursorState(cursorLocked);
+    }
 
 	private void SetCursorState(bool newState)
 	{

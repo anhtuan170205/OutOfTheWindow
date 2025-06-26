@@ -27,6 +27,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void HandleEnemyDied()
     {
+        EnemySpawner.Instance.SetEnemyCount(EnemySpawner.Instance.GetCurrentEnemyCount() - 1);
         Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

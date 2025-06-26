@@ -5,14 +5,17 @@ using System;
 public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
 {
     public static event Action OnEveryEnemyDied;
+    public static event Action<int> OnEnemyCountChanged;
     [SerializeField] private List<Enemy> enemyPrefabList;
     [SerializeField] private List<Transform> spawnPointList;
     [SerializeField] private float spawnInterval = 2;
     private List<Enemy> spawnedEnemyList = new List<Enemy>();
+
     private int enemyToSpawn;
     private int enemySpawned;
     private float spawnTimer;
     private bool isSpawning;
+    private int currentEnemyCount;
 
     private void Update()
     {
@@ -36,7 +39,7 @@ public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
         spawnTimer = spawnInterval;
         isSpawning = true;
         spawnedEnemyList.Clear();
-        Debug.Log($"Starting to spawn {enemyToSpawn} enemies.");
+        SetEnemyCount(enemyToSpawn);
     }
 
     private void SpawnEnemy()
@@ -57,5 +60,16 @@ public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
             OnEveryEnemyDied?.Invoke();
             Debug.Log("All enemies have been defeated!");
         }
+    }
+
+    public void SetEnemyCount(int count)
+    {
+        currentEnemyCount = count;
+        OnEnemyCountChanged?.Invoke(currentEnemyCount);
+    }
+
+    public int GetCurrentEnemyCount()
+    {
+        return currentEnemyCount;
     }
 }

@@ -1,15 +1,16 @@
 using UnityEngine;
+using System;
 
 public class TurnManager : SingletonMonoBehaviour<TurnManager>
 {
     [SerializeField] private int baseEnemyCount = 5;
     [SerializeField] private float difficultyMultiplier = 1.2f;
-    private int currentTurn = 0;
-    public int CurrentTurn => currentTurn;
+    private int currentTurn = 1;
+    public static event Action<int> OnTurnChanged;
 
     public void NextTurn()
     {
-        currentTurn++;
+        SetTurn(currentTurn + 1);
         SetNight();
     }
 
@@ -21,7 +22,7 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
 
     public void ResetTurn()
     {
-        currentTurn = 0;
+        SetTurn(0);
         SetNight();
     }
 
@@ -43,7 +44,6 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
     private void HandleEveryEnemyDied()
     {
         SetDay();
-        Debug.Log($"All enemies defeated! Setting to day. Current turn: {currentTurn}");
     }
 
     private void Update()
@@ -64,5 +64,11 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
     {
         DayNightManager.Instance.SetState(DayNightState.Night);
         EnemySpawner.Instance.StartSpawning(GetEnemyForCurrentTurn());
+    }
+
+    public void SetTurn(int turn)
+    {
+        currentTurn = turn;
+        OnTurnChanged?.Invoke(currentTurn);
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 public class Player : SingletonMonoBehaviour<Player>
 {
     [SerializeField] private Health health;
+    [SerializeField] private Shield shield;
 
     private void OnEnable()
     {
@@ -17,4 +18,17 @@ public class Player : SingletonMonoBehaviour<Player>
     {
         Debug.Log("Player Died");
     }
+
+    public void TakeDamage(int damage)
+    {
+        if (shield.GetCurrentShield() > 0)
+        {
+            shield.TakeDamage(damage);
+        }
+        else
+        {
+            health.TakeDamage(damage);
+        }
+    }
+    
 }

@@ -12,7 +12,6 @@ public class DayNightManager : SingletonMonoBehaviour<DayNightManager>
         {
             CurrentState = newState;
             OnStateChanged?.Invoke(CurrentState);
-            Debug.Log($"DayNightManager: State changed to {CurrentState}");
         }
     }
 }

@@ -73,15 +73,13 @@ public class Drone : Enemy
     private void Explode()
     {
         health.TakeDamage(health.GetCurrentHealth());
-        Debug.Log("Drone exploded!");
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
-            Health targetHealth = hitCollider.GetComponent<Health>();
-            if (targetHealth != null && targetHealth != health)
+            Player player = hitCollider.GetComponent<Player>();
+            if (player != null)
             {
-                targetHealth.TakeDamage(explosionDamage);
-                Debug.Log("Hit " + hitCollider.name + " with explosion damage.");
+                player.TakeDamage(explosionDamage);
             }
         }
     }
