@@ -22,6 +22,7 @@ public class Weapon : MonoBehaviour
     public static event Action<Weapon> OnWeaponEquipped;
     public static event Action<int> OnClipAmmoChanged;
     public static event Action<int> OnAmmoChanged;
+    public static event Action<float> OnRecoil;
 
     public virtual void Shoot()
     {
@@ -42,6 +43,7 @@ public class Weapon : MonoBehaviour
             muzzleFlash?.Play();
             animator.SetTrigger(shootString);
             FireAmmo();
+            OnRecoil?.Invoke(weaponDetails.RecoilStrength);
         }
         else
         {

@@ -12,7 +12,5 @@ public class WeaponDetailsSO : ScriptableObject
     public float PrechargeTime;
     public int Damage;
     public float Range;
-    public Vector2 RecoilDir;
     public float RecoilStrength;
-    public float RecoilReturnSpeed;
 }
