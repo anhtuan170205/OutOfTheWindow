@@ -22,7 +22,7 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
 
     public void ResetTurn()
     {
-        SetTurn(0);
+        SetTurn(1);
         SetNight();
     }
 
