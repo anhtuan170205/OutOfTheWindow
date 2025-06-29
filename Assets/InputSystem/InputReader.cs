@@ -13,6 +13,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event Action<bool> ReloadEvent;
     public event Action<bool> SwapEvent;
     public event Action PauseEvent;
+    public event Action InteractEvent;
 	public bool analogMovement;
     public bool cursorLocked = true;
     public bool cursorInputForLook = true; 
@@ -89,6 +90,14 @@ public class InputReader : ScriptableObject, IPlayerActions
         if (context.performed)
         {
             PauseEvent?.Invoke();
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            InteractEvent?.Invoke();
         }
     }
 
