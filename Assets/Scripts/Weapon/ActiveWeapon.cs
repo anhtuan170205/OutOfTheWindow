@@ -46,8 +46,19 @@ public class ActiveWeapon : MonoBehaviour
     private void HandleSwap(bool isSwap)
     {
         currentWeapon.Unequip();
-        currentWeaponIndex = (currentWeaponIndex + 1) % weaponList.Count;
-        currentWeapon = weaponList[currentWeaponIndex];
+        int startIndex = currentWeaponIndex;
+        do
+        {
+            currentWeaponIndex = (currentWeaponIndex + 1) % weaponList.Count;
+            Weapon nextWeapon = weaponList[currentWeaponIndex];
+            if (nextWeapon is Rifle rifle && !rifle.IsUnlocked)
+            {
+                continue;
+            }
+            currentWeapon = nextWeapon;
+            currentWeapon.Equip();
+            return;
+        } while (currentWeaponIndex != startIndex);
         currentWeapon.Equip();
     }
     private void Update()
@@ -60,7 +71,15 @@ public class ActiveWeapon : MonoBehaviour
 
     public void UnlockRifle()
     {
-
+        foreach (Weapon weapon in weaponList)
+        {
+            if (weapon is Rifle rifle && !rifle.IsUnlocked)
+            {
+                rifle.Unlock();
+                Debug.Log("Rifle unlocked!");
+                return;
+            }
+        }
     }
 
     public void AddAmmo(int amount)

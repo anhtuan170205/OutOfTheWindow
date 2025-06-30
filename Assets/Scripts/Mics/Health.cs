@@ -7,6 +7,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int maxHealth;
     private int currentHealth;
     public static event Action<int> OnPlayerHealthChanged;
+    public static event Action<int> OnPlayerMaxHealthChanged;
     public event Action OnPlayerDied;
     public event Action OnEnemyDied;
 
@@ -67,6 +68,7 @@ public class Health : MonoBehaviour
     public void IncreaseMaxHealth(int amount)
     {
         maxHealth += amount;
+        OnPlayerMaxHealthChanged?.Invoke(maxHealth);
         SetHealth(currentHealth + amount);
     }
 }

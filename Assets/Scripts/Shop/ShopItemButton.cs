@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopItemButton : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private ShopItemSO itemDetails;
+    [SerializeField] private Button button;
+
+    private void Awake()
     {
-        
+        button.onClick.AddListener(OnButtonClicked);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnButtonClicked()
     {
-        
+        Shop.Instance.TryPurchaseItem(itemDetails);
     }
 }

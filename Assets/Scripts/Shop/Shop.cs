@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Shop : SingletonMonoBehaviour<Shop>
 {
-
+    public bool isRifleUnlocked = false;
     public void TryPurchaseItem(ShopItemSO item)
     {
         if (!Player.Instance.GetMoneyWallet().SpendMoney(item.price))
@@ -21,10 +21,16 @@ public class Shop : SingletonMonoBehaviour<Shop>
                 Player.Instance.GetShield().IncreaseMaxShield(50);
                 break;
             case ShopItemType.UnlockRifle:
+                if (isRifleUnlocked)
+                {
+                    Debug.Log("Rifle is already unlocked.");
+                    return;
+                }
                 Player.Instance.GetActiveWeapon().UnlockRifle();
+                isRifleUnlocked = true;
                 break;
             case ShopItemType.RifleAmmo:
-                Player.Instance.GetActiveWeapon().AddAmmo(300);
+                Player.Instance.GetActiveWeapon().AddAmmo(60);
                 break;
         }
     }

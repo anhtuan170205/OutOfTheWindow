@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
 
             if (!weaponDetails.HasInfiniteClipAmmo)
             {
-                ChangeClipAmmo(-1);
+                ChangeClipAmmo(currentClipAmmo - 1);
             }
 
             fireRateCooldownTimer = weaponDetails.FireRate;
@@ -71,7 +71,7 @@ public class Weapon : MonoBehaviour
         if (currentAmmo == 0 && !weaponDetails.HasInfiniteAmmo)
         {
             int ammoToLoad = weaponDetails.MaxAmmo;
-            ChangeAmmo(ammoToLoad);
+            ChangeAmmo(currentAmmo + ammoToLoad);
         }
         else
         {
@@ -81,8 +81,8 @@ public class Weapon : MonoBehaviour
         if (currentClipAmmo == 0 && !weaponDetails.HasInfiniteClipAmmo)
         {
             int ammoToLoad = Mathf.Min(weaponDetails.MaxClipAmmo, currentAmmo);
-            ChangeClipAmmo(ammoToLoad);
-            ChangeAmmo(-ammoToLoad);
+            ChangeClipAmmo(currentClipAmmo + ammoToLoad);
+            ChangeAmmo(currentAmmo - ammoToLoad);
         }
         else
         {
@@ -138,13 +138,13 @@ public class Weapon : MonoBehaviour
         if (weaponDetails.HasInfiniteAmmo)
         {
             int amountToMax = weaponDetails.MaxClipAmmo - currentClipAmmo;
-            ChangeClipAmmo(amountToMax);
+            ChangeClipAmmo(currentClipAmmo + amountToMax);
         }
         else
         {
             int ammoToReload = Mathf.Min(ammoNeeded, currentAmmo);
-            ChangeClipAmmo(ammoToReload);
-            ChangeAmmo(-ammoToReload);
+            ChangeClipAmmo(currentClipAmmo + ammoToReload);
+            ChangeAmmo(currentAmmo - ammoToReload);
         }
         isReloading = false;
     }
@@ -165,13 +165,13 @@ public class Weapon : MonoBehaviour
 
     private void ChangeClipAmmo(int amount)
     {
-        currentClipAmmo += amount;
+        currentClipAmmo = amount;
         OnClipAmmoChanged?.Invoke(currentClipAmmo);
     }
 
     private void ChangeAmmo(int amount)
     {
-        currentAmmo += amount;
+        currentAmmo = amount;
         OnAmmoChanged?.Invoke(currentAmmo);
     }
 
@@ -181,6 +181,6 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
-        
+        ChangeAmmo(currentAmmo + amount);
     }
 }

@@ -7,6 +7,7 @@ public class Shield : MonoBehaviour
     [SerializeField] private float regenRate = 10f;
     [SerializeField] private float shieldRegenCooldown = 2f;
     public static event Action<int> OnShieldChanged;
+    public static event Action<int> OnMaxShieldChanged;
     private int currentShield;
     private float shieldRegenTimer;
     private float shieldRegenBuffer;
@@ -25,6 +26,7 @@ public class Shield : MonoBehaviour
     {
         if (currentShield >= maxShield)
         {
+            shieldRegenBuffer = 0f;
             return;
         }
         if (shieldRegenTimer > 0f)
@@ -69,10 +71,12 @@ public class Shield : MonoBehaviour
     {
         return currentShield;
     }
-    
+
     public void IncreaseMaxShield(int amount)
     {
         maxShield += amount;
+        OnMaxShieldChanged?.Invoke(maxShield);
         SetShield(currentShield + amount);
     }
+
 }
