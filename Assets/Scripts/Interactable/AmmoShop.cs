@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class AmmoShop : Shop
+public class AmmoShop : MonoBehaviour, IInteractable
 {
-    public override void Interact()
+    public void Interact()
     {
-        
+        Debug.Log("Interacting with Ammo Shop");
     }
 }
+

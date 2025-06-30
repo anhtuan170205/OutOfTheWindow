@@ -44,14 +44,29 @@ public class Health : MonoBehaviour
             health = 0;
         }
         currentHealth = health;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
         if (isPlayer)
         {
             OnPlayerHealthChanged?.Invoke(currentHealth);
         }
     }
 
+    public void Heal(int amount)
+    {
+        SetHealth(currentHealth + amount);
+    }
+
     public int GetCurrentHealth()
     {
         return currentHealth;
+    }
+
+    public void IncreaseMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        SetHealth(currentHealth + amount);
     }
 }

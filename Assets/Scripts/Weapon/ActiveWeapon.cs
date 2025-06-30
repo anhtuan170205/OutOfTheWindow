@@ -57,4 +57,15 @@ public class ActiveWeapon : MonoBehaviour
             currentWeapon.Shoot();
         }
     }
+
+    public void UnlockRifle()
+    {
+
+    }
+
+    public void AddAmmo(int amount)
+    {
+        currentWeapon.AddAmmo(amount);
+    }
+    
 }

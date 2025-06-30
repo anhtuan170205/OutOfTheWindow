@@ -38,7 +38,7 @@ public class Shield : MonoBehaviour
             int regenAmount = Mathf.FloorToInt(shieldRegenBuffer);
             shieldRegenBuffer -= regenAmount;
             SetShield(currentShield + regenAmount);
-        }        
+        }
     }
 
     private void SetShield(int shield)
@@ -68,5 +68,11 @@ public class Shield : MonoBehaviour
     public int GetCurrentShield()
     {
         return currentShield;
+    }
+    
+    public void IncreaseMaxShield(int amount)
+    {
+        maxShield += amount;
+        SetShield(currentShield + amount);
     }
 }

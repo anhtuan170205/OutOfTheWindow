@@ -42,7 +42,7 @@ public class Drone : Enemy
         transform.position += direction * chargeSpeed * Time.deltaTime;
 
         float distanceToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        if (distanceToPlayer <= 1f)
+        if (distanceToPlayer <= explosionRadius / 2)
         {
             StopCharge();
             Attack();

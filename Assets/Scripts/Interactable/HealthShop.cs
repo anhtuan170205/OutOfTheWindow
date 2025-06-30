@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class HealthShop : Shop
+public class HealthShop : MonoBehaviour, IInteractable
 {
-    public override void Interact()
+    public void Interact()
     {
-        
+        Debug.Log("Interacting with Health Shop");
     }
 }

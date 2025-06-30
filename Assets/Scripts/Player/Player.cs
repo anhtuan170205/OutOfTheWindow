@@ -4,6 +4,8 @@ public class Player : SingletonMonoBehaviour<Player>
 {
     [SerializeField] private Health health;
     [SerializeField] private Shield shield;
+    [SerializeField] private MoneyWallet moneyWallet;
+    [SerializeField] private ActiveWeapon activeWeapon;
 
     private void OnEnable()
     {
@@ -29,6 +31,26 @@ public class Player : SingletonMonoBehaviour<Player>
         {
             health.TakeDamage(damage);
         }
+    }
+
+    public Health GetHealth()
+    {
+        return health;
+    }
+
+    public Shield GetShield()
+    {
+        return shield;
+    }
+
+    public MoneyWallet GetMoneyWallet()
+    {
+        return moneyWallet;
+    }
+
+    public ActiveWeapon GetActiveWeapon()
+    {
+        return activeWeapon;
     }
     
 }

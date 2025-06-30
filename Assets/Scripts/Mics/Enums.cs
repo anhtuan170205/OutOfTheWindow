@@ -14,3 +14,12 @@ public enum GameState
     GameOver
 }
 
+public enum ShopItemType
+{
+    Heal,
+    MaxHealthUp,
+    MaxShieldUp,
+    UnlockRifle,
+    RifleAmmo
+}
+

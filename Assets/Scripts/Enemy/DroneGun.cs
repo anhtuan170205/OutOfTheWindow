@@ -7,7 +7,7 @@ public class DroneGun : Enemy
     [SerializeField] private float fireRate = 1f;
     [SerializeField] private GameObject enemyAmmoPrefab;
     [SerializeField] private List<Transform> firePointList;
-    [SerializeField] private Transform gunTransform;
+    [SerializeField] private Transform droneTransform;
     private float fireTimer = 0f;
     public override void Move()
     {
@@ -24,20 +24,23 @@ public class DroneGun : Enemy
         }
     }
 
-    protected override void Update()
-    {
-        base.Update();
-        gunTransform.LookAt(Player.Instance.transform.position);
-    }
-
     public override void Attack()
     {
+        Aim();
         fireTimer -= Time.deltaTime;
         if (fireTimer <= 0f)
         {
             FireProjectiles();
             fireTimer = fireRate;
         }
+    }
+
+    private void Aim()
+    {
+        Vector3 targetPosition = Player.Instance.transform.position + Vector3.up * 1.0f;
+        Vector3 direction = (targetPosition - droneTransform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        droneTransform.rotation = Quaternion.Slerp(droneTransform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
     private void FireProjectiles()

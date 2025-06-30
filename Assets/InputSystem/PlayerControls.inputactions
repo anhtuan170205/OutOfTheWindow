@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "Shop",
                     "type": "Button",
                     "id": "6a219f77-135f-4ddb-a615-dc9480413a16",
                     "expectedControlType": "",
@@ -280,11 +280,11 @@
                 {
                     "name": "",
                     "id": "b7f904b0-d780-4cb4-b577-aa5fe12d480c",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/b",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Interact",
+                    "action": "Shop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

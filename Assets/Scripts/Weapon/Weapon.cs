@@ -174,4 +174,13 @@ public class Weapon : MonoBehaviour
         currentAmmo += amount;
         OnAmmoChanged?.Invoke(currentAmmo);
     }
+
+    public void AddAmmo(int amount)
+    {
+        if (weaponDetails.HasInfiniteAmmo)
+        {
+            return;
+        }
+        
+    }
 }
