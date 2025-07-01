@@ -6,8 +6,10 @@ public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
 {
     public static event Action OnEveryEnemyDied;
     public static event Action<int> OnEnemyCountChanged;
+    [Header("References")]
     [SerializeField] private List<Enemy> enemyPrefabList;
     [SerializeField] private List<Transform> spawnPointList;
+    [Header("Settings")]
     [SerializeField] private float spawnInterval = 2;
     private List<Enemy> spawnedEnemyList = new List<Enemy>();
 
@@ -58,7 +60,6 @@ public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
         {
             isSpawning = false;
             OnEveryEnemyDied?.Invoke();
-            Debug.Log("All enemies have been defeated!");
         }
     }
 

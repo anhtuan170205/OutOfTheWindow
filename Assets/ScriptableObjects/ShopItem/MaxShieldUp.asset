@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 2
   itemName: Max Shield Up
-  price: 50
+  price: 100
   icon: {fileID: 0}

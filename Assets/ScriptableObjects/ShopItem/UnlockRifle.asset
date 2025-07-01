@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 3
   itemName: Unlock Rifle
-  price: 50
+  price: 300
   icon: {fileID: 0}

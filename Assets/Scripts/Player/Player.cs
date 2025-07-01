@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player : SingletonMonoBehaviour<Player>
 {
+    [Header("References")]
     [SerializeField] private Health health;
     [SerializeField] private Shield shield;
     [SerializeField] private MoneyWallet moneyWallet;

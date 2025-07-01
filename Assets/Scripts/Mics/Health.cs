@@ -3,14 +3,14 @@ using System;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private bool isPlayer;
-    [SerializeField] private int maxHealth;
-    private int currentHealth;
     public static event Action<int> OnPlayerHealthChanged;
     public static event Action<int> OnPlayerMaxHealthChanged;
     public event Action OnPlayerDied;
     public event Action OnEnemyDied;
 
+    [SerializeField] private bool isPlayer;
+    [SerializeField] private int maxHealth;
+    private int currentHealth;
 
     private void Start()
     {

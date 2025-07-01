@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class DroneGun : Enemy
 {
+    [Header("Gun")]
     [SerializeField] private float detectionRange = 10f;
     [SerializeField] private float fireRate = 1f;
     [SerializeField] private GameObject enemyAmmoPrefab;

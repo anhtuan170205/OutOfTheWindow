@@ -16,8 +16,17 @@ public class ShopUI : MonoBehaviour
         inputReader.ShopEvent -= ToggleShop;
     }
 
+    private void Start()
+    {
+        ToggleShop(false);
+    }
+
     private void ToggleShop(bool isOpen)
     {
+        if (DayNightManager.Instance.CurrentState == DayNightState.Night)
+        {
+            return;
+        }
         if (!isOpen)
         {
             shopUI.SetActive(false);

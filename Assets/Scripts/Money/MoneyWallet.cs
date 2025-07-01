@@ -4,7 +4,7 @@ using System;
 public class MoneyWallet : MonoBehaviour
 {
     public static event Action<int> OnMoneyChanged;
-    private int totalMoney = 1000;
+    private int totalMoney = 0;
     public int TotalMoney
     {
         get => totalMoney;
@@ -13,6 +13,11 @@ public class MoneyWallet : MonoBehaviour
             totalMoney = value;
             OnMoneyChanged?.Invoke(totalMoney);
         }
+    }
+
+    private void Start()
+    {
+        TotalMoney = 0;
     }
 
     public void AddMoney(int amount)

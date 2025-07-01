@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Drone : Enemy
 {
+    [Header("Explosion")]
     [SerializeField] private float chargeDistance = 5f;
     [SerializeField] private float chargeSpeed = 20f;
     [SerializeField] private float chargeCooldown = 5f;

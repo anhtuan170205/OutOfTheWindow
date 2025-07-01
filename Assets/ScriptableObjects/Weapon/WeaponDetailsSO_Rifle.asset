@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HasInfiniteAmmo: 0
   HasInfiniteClipAmmo: 0
-  MaxAmmo: 360
+  MaxAmmo: 90
   MaxClipAmmo: 30
   ReloadTime: 2
   FireRate: 0.1666667

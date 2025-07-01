@@ -3,11 +3,10 @@ using System;
 
 public class TurnManager : SingletonMonoBehaviour<TurnManager>
 {
+    public static event Action<int> OnTurnChanged;
     [SerializeField] private int baseEnemyCount = 5;
     [SerializeField] private float difficultyMultiplier = 1.2f;
     private int currentTurn = 1;
-    public static event Action<int> OnTurnChanged;
-
     public void NextTurn()
     {
         SetTurn(currentTurn + 1);

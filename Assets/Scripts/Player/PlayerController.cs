@@ -3,6 +3,7 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private InputReader input;
 
     [Header("Player")]

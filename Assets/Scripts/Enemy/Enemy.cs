@@ -3,9 +3,12 @@ using UnityEngine.AI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] protected Health health;
     [SerializeField] protected NavMeshAgent navMeshAgent;
     [SerializeField] protected GameObject explosionVFXPrefab;
+    [Header("Settings")]
+    [SerializeField] protected int moneyValue;
 
     protected virtual void Update()
     {
@@ -27,6 +30,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void HandleEnemyDied()
     {
+        Player.Instance.GetMoneyWallet().AddMoney(moneyValue);
         EnemySpawner.Instance.SetEnemyCount(EnemySpawner.Instance.GetCurrentEnemyCount() - 1);
         GameObject vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
         Destroy(vfx, 2f);

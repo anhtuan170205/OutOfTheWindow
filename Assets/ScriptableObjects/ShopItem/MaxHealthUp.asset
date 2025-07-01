@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 1
   itemName: Max Health Up
-  price: 50
+  price: 75
   icon: {fileID: 0}

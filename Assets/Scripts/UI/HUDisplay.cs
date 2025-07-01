@@ -91,6 +91,6 @@ public class HUDisplay : MonoBehaviour
 
     private void UpdateMoney(int money)
     {
-        moneyText.text = "MONEY: " + money.ToString("0000");
+        moneyText.text = "MONEY : " + money.ToString("0000") + " $";
     }
 }
