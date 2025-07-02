@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class ActiveWeapon : MonoBehaviour
 {
@@ -85,6 +86,11 @@ public class ActiveWeapon : MonoBehaviour
     public void AddAmmo(int amount)
     {
         currentWeapon.AddAmmo(amount);
+    }
+
+    public Weapon GetCurrentWeapon()
+    {
+        return currentWeapon;
     }
     
 }

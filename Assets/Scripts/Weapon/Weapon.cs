@@ -4,6 +4,14 @@ using System;
 
 public class Weapon : MonoBehaviour
 {
+    public static event Action<Weapon> OnWeaponEquipped;
+    public static event Action<int> OnClipAmmoChanged;
+    public static event Action<int> OnAmmoChanged;
+    public static event Action<float> OnRecoil;
+    public event Action OnShoot;
+    public event Action OnReload;
+
+    [Header("References")]
     [SerializeField] protected WeaponDetailsSO weaponDetails;
     [SerializeField] protected ParticleSystem muzzleFlash;
     [SerializeField] private GameObject WeaponModel;
@@ -19,10 +27,6 @@ public class Weapon : MonoBehaviour
     protected int shootString = Animator.StringToHash("Shoot");
     protected int reloadString = Animator.StringToHash("Reload");
 
-    public static event Action<Weapon> OnWeaponEquipped;
-    public static event Action<int> OnClipAmmoChanged;
-    public static event Action<int> OnAmmoChanged;
-    public static event Action<float> OnRecoil;
 
     public virtual void Shoot()
     {
@@ -44,6 +48,7 @@ public class Weapon : MonoBehaviour
             animator.SetTrigger(shootString);
             FireAmmo();
             OnRecoil?.Invoke(weaponDetails.RecoilStrength);
+            OnShoot?.Invoke();
         }
         else
         {
@@ -60,6 +65,7 @@ public class Weapon : MonoBehaviour
             return;
         }
         animator.SetTrigger(reloadString);
+        OnReload?.Invoke();
         StartCoroutine(ReloadCoroutine());
     }
 
