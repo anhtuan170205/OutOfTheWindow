@@ -12,10 +12,10 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     [SerializeField] private AudioClip levelCompleteSound;
     [SerializeField] private AudioClip gameOverSound;
 
-    [Header("Settings")]
-    [Range(0, 1)][SerializeField] private float backgroundVolume = 0.5f;
-    [Range(0, 1)][SerializeField] private float soundEffectVolume = 1.0f;
-    [Range(1, 100)][SerializeField] private float gameOverVolume = 50f;
+    // [Header("Settings")]
+    // [Range(0, 1)][SerializeField] private float backgroundVolume = 0.5f;
+    // [Range(0, 1)][SerializeField] private float soundEffectVolume = 1.0f;
+    // [Range(1, 100)][SerializeField] private float gameOverVolume = 50f;
 
     private void OnEnable()
     {

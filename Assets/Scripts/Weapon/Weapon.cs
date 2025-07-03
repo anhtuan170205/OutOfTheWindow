@@ -4,10 +4,10 @@ using System;
 
 public class Weapon : MonoBehaviour
 {
-    public static event Action<Weapon> OnWeaponEquipped;
-    public static event Action<int> OnClipAmmoChanged;
-    public static event Action<int> OnAmmoChanged;
-    public static event Action<float> OnRecoil;
+    public event Action<Weapon> OnWeaponEquipped;
+    public event Action<int> OnClipAmmoChanged;
+    public event Action<int> OnAmmoChanged;
+    public event Action<float> OnRecoil;
     public event Action OnShoot;
     public event Action OnReload;
 

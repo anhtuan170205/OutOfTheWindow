@@ -3,14 +3,20 @@ using System;
 
 public class DayNightManager : SingletonMonoBehaviour<DayNightManager>
 {
-    public static event Action<DayNightState> OnStateChanged;
-    public DayNightState CurrentState { get; private set; } = DayNightState.Day;
-    public void SetState(DayNightState newState)
+    public event Action<DayNightState> OnStateChanged;
+    private DayNightState currentState;
+    public DayNightState CurrentState
     {
-        if (CurrentState != newState)
+        get => currentState;
+        private set
         {
-            CurrentState = newState;
-            OnStateChanged?.Invoke(CurrentState);
+            currentState = value;
+            OnStateChanged?.Invoke(currentState);
         }
+    }
+
+    public void SetState(DayNightState state)
+    {
+        CurrentState = state;
     }
 }

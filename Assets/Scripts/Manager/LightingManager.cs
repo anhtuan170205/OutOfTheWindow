@@ -9,12 +9,12 @@ public class LightingManager : SingletonMonoBehaviour<LightingManager>
 
     private void OnEnable()
     {
-        DayNightManager.OnStateChanged += UpdateLighting;
+        DayNightManager.Instance.OnStateChanged += UpdateLighting;
     }
 
     private void OnDisable()
     {
-        DayNightManager.OnStateChanged -= UpdateLighting;
+        DayNightManager.Instance.OnStateChanged -= UpdateLighting;
     }
 
     private void UpdateLighting(DayNightState state)

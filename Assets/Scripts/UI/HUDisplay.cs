@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class HUDisplay : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class HUDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI shieldText;
     [SerializeField] private TextMeshProUGUI dayText;
     [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI dayTimerText;
     [SerializeField] private TextMeshProUGUI enemyCountText;
     [SerializeField] private TextMeshProUGUI moneyText;
     private float maxShield = 100f;
@@ -19,30 +21,59 @@ public class HUDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        Weapon.OnClipAmmoChanged += UpdateAmmoClip;
-        Weapon.OnAmmoChanged += UpdateAmmo;
-        Health.OnPlayerHealthChanged += UpdateHealth;
-        Health.OnPlayerMaxHealthChanged += (maxHealth) => { this.maxHealth = maxHealth; };
-        TurnManager.OnTurnChanged += UpdateDay;
-        DayNightManager.OnStateChanged += UpdateTime;
-        EnemySpawner.OnEnemyCountChanged += UpdateEnemyCount;
-        Shield.OnShieldChanged += UpdateShield;
-        Shield.OnMaxShieldChanged += (maxShield) => { this.maxShield = maxShield; };
-        MoneyWallet.OnMoneyChanged += UpdateMoney;
+        StartCoroutine(WaitForPlayerAndBind());
     }
+
+    private IEnumerator WaitForPlayerAndBind()
+    {
+        yield return new WaitUntil(() =>
+            Player.Instance != null &&
+            Player.Instance.GetActiveWeapon() != null &&
+            Player.Instance.GetActiveWeapon().GetCurrentWeapon() != null &&
+            Player.Instance.GetHealth() != null &&
+            Player.Instance.GetShield() != null &&
+            Player.Instance.GetMoneyWallet() != null &&
+            TurnManager.Instance != null &&
+            DayNightManager.Instance != null
+        );
+
+        Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnClipAmmoChanged += UpdateAmmoClip;
+        Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnAmmoChanged += UpdateAmmo;
+        Player.Instance.GetHealth().OnPlayerHealthChanged += UpdateHealth;
+        Player.Instance.GetHealth().OnPlayerMaxHealthChanged += (max) => { maxHealth = max; };
+        TurnManager.Instance.OnTurnChanged += UpdateDay;
+        TurnManager.Instance.OnDayTimerChanged += UpdateDayTimer;
+        DayNightManager.Instance.OnStateChanged += UpdateTime;
+        EnemySpawner.OnEnemyCountChanged += UpdateEnemyCount;
+        Player.Instance.GetShield().OnShieldChanged += UpdateShield;
+        Player.Instance.GetShield().OnMaxShieldChanged += (max) => { maxShield = max; };
+        Player.Instance.GetMoneyWallet().OnMoneyChanged += UpdateMoney;
+    }
+
 
     private void OnDisable()
     {
-        Weapon.OnClipAmmoChanged -= UpdateAmmoClip;
-        Weapon.OnAmmoChanged -= UpdateAmmo;
-        Health.OnPlayerHealthChanged -= UpdateHealth;
-        Health.OnPlayerMaxHealthChanged -= (maxHealth) => { this.maxHealth = maxHealth; };
-        TurnManager.OnTurnChanged -= UpdateDay;
-        DayNightManager.OnStateChanged -= UpdateTime;
+        Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnClipAmmoChanged -= UpdateAmmoClip;
+        Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnAmmoChanged -= UpdateAmmo;
+        Player.Instance.GetHealth().OnPlayerHealthChanged -= UpdateHealth;
+        Player.Instance.GetHealth().OnPlayerMaxHealthChanged -= (maxHealth) => { this.maxHealth = maxHealth; };
+        TurnManager.Instance.OnTurnChanged -= UpdateDay;
+        TurnManager.Instance.OnDayTimerChanged -= UpdateDayTimer;
+        DayNightManager.Instance.OnStateChanged -= UpdateTime;
         EnemySpawner.OnEnemyCountChanged -= UpdateEnemyCount;
-        Shield.OnShieldChanged -= UpdateShield;
-        Shield.OnMaxShieldChanged -= (maxShield) => { this.maxShield = maxShield; };
-        MoneyWallet.OnMoneyChanged -= UpdateMoney;
+        Player.Instance.GetShield().OnShieldChanged -= UpdateShield;
+        Player.Instance.GetShield().OnMaxShieldChanged -= (maxShield) => { this.maxShield = maxShield; };
+        Player.Instance.GetMoneyWallet().OnMoneyChanged -= UpdateMoney;
+    }
+
+    private void Start()
+    {
+        dayTimerText.gameObject.SetActive(true);
+        UpdateTime(DayNightManager.Instance.CurrentState);
+        UpdateEnemyCount(0);
+        UpdateMoney(0);
+        UpdateAmmo(0);
+        UpdateAmmoClip(10);
     }
 
     private void UpdateAmmoClip(int ammoClip)
@@ -69,7 +100,21 @@ public class HUDisplay : MonoBehaviour
 
     private void UpdateDay(int day)
     {
-        dayText.text = "Day " + day.ToString();
+        dayText.text = day.ToString();
+    }
+
+    private void UpdateDayTimer(int seconds)
+    {
+        if (DayNightManager.Instance.CurrentState == DayNightState.Day)
+        {
+            dayTimerText.gameObject.SetActive(true);
+            dayTimerText.color = Color.white;
+            dayTimerText.text = "DAY DURATION : " + seconds.ToString("00") + "s";
+        }
+        else
+        {
+            dayTimerText.gameObject.SetActive(false);
+        }
     }
 
     private void UpdateTime(DayNightState state)
@@ -81,7 +126,7 @@ public class HUDisplay : MonoBehaviour
     {
         if (count == 0)
         {
-            enemyCountText.text = "PREPARING FOR THE NEXT NIGHT";
+            enemyCountText.text = "PRESS B TO OPEN THE SHOP";
         }
         else
         {

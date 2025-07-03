@@ -3,8 +3,8 @@ using System;
 
 public class Shield : MonoBehaviour
 {
-    public static event Action<int> OnShieldChanged;
-    public static event Action<int> OnMaxShieldChanged;
+    public event Action<int> OnShieldChanged;
+    public event Action<int> OnMaxShieldChanged;
     [SerializeField] private int maxShield = 100;
     [SerializeField] private float regenRate = 10f;
     [SerializeField] private float shieldRegenCooldown = 2f;

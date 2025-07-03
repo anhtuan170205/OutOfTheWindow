@@ -3,15 +3,19 @@ using System;
 
 public class TurnManager : SingletonMonoBehaviour<TurnManager>
 {
-    public static event Action<int> OnTurnChanged;
+    public event Action<int> OnTurnChanged;
+    public event Action<int> OnDayTimerChanged;
     [SerializeField] private int baseEnemyCount = 5;
     [SerializeField] private float difficultyMultiplier = 1.2f;
+    [SerializeField] private float dayDuration = 30f;
     private int currentTurn = 1;
+    private float dayTimer = 0f;
     public void NextTurn()
     {
         SetTurn(currentTurn + 1);
-        SetNight();
+        SetDay();
     }
+
 
     public int GetEnemyForCurrentTurn()
     {
@@ -22,8 +26,9 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
     public void ResetTurn()
     {
         SetTurn(1);
-        SetNight();
+        SetDay();
     }
+
 
     private void Start()
     {
@@ -42,21 +47,30 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
 
     private void HandleEveryEnemyDied()
     {
-        SetDay();
+        NextTurn();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+        if (DayNightManager.Instance.CurrentState == DayNightState.Day)
         {
-            NextTurn();
-            Debug.Log($"Next turn: {currentTurn}. Enemies for this turn: {GetEnemyForCurrentTurn()}");
+            dayTimer -= Time.deltaTime;
+            Debug.Log($"Day Timer: {dayTimer}");
+            OnDayTimerChanged?.Invoke(Mathf.CeilToInt(dayTimer));
+
+            if (dayTimer <= 0f)
+            {
+                SetNight();
+            }
         }
     }
+
+
 
     private void SetDay()
     {
         DayNightManager.Instance.SetState(DayNightState.Day);
+        dayTimer = dayDuration;
     }
 
     private void SetNight()
@@ -70,4 +84,5 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
         currentTurn = turn;
         OnTurnChanged?.Invoke(currentTurn);
     }
+
 }

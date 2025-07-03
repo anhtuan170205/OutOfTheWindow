@@ -3,8 +3,8 @@ using System;
 
 public class Health : MonoBehaviour
 {
-    public static event Action<int> OnPlayerHealthChanged;
-    public static event Action<int> OnPlayerMaxHealthChanged;
+    public event Action<int> OnPlayerHealthChanged;
+    public event Action<int> OnPlayerMaxHealthChanged;
     public event Action OnPlayerDied;
     public event Action OnEnemyDied;
 

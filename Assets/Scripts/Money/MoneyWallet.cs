@@ -3,7 +3,7 @@ using System;
 
 public class MoneyWallet : MonoBehaviour
 {
-    public static event Action<int> OnMoneyChanged;
+    public event Action<int> OnMoneyChanged;
     private int totalMoney = 0;
     public int TotalMoney
     {
