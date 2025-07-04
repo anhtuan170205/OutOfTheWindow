@@ -224,7 +224,7 @@ MonoBehaviour:
   chargeSpeed: 20
   chargeCooldown: 5
   explosionRadius: 3
-  explosionDamage: 25
+  explosionDamage: 50
 --- !u!1 &8108830887239652001
 GameObject:
   m_ObjectHideFlags: 0

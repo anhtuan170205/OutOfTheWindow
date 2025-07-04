@@ -44,7 +44,7 @@ public class HUDisplay : MonoBehaviour
         TurnManager.Instance.OnTurnChanged += UpdateDay;
         TurnManager.Instance.OnDayTimerChanged += UpdateDayTimer;
         DayNightManager.Instance.OnStateChanged += UpdateTime;
-        EnemySpawner.OnEnemyCountChanged += UpdateEnemyCount;
+        EnemySpawner.Instance.OnEnemyCountChanged += UpdateEnemyCount;
         Player.Instance.GetShield().OnShieldChanged += UpdateShield;
         Player.Instance.GetShield().OnMaxShieldChanged += (max) => { maxShield = max; };
         Player.Instance.GetMoneyWallet().OnMoneyChanged += UpdateMoney;
@@ -60,7 +60,7 @@ public class HUDisplay : MonoBehaviour
         TurnManager.Instance.OnTurnChanged -= UpdateDay;
         TurnManager.Instance.OnDayTimerChanged -= UpdateDayTimer;
         DayNightManager.Instance.OnStateChanged -= UpdateTime;
-        EnemySpawner.OnEnemyCountChanged -= UpdateEnemyCount;
+        EnemySpawner.Instance.OnEnemyCountChanged -= UpdateEnemyCount;
         Player.Instance.GetShield().OnShieldChanged -= UpdateShield;
         Player.Instance.GetShield().OnMaxShieldChanged -= (maxShield) => { this.maxShield = maxShield; };
         Player.Instance.GetMoneyWallet().OnMoneyChanged -= UpdateMoney;
@@ -105,21 +105,13 @@ public class HUDisplay : MonoBehaviour
 
     private void UpdateDayTimer(int seconds)
     {
-        if (DayNightManager.Instance.CurrentState == DayNightState.Day)
-        {
-            dayTimerText.gameObject.SetActive(true);
-            dayTimerText.color = Color.white;
-            dayTimerText.text = "DAY DURATION : " + seconds.ToString("00") + "s";
-        }
-        else
-        {
-            dayTimerText.gameObject.SetActive(false);
-        }
+        dayTimerText.text = "DAY DURATION : " + seconds.ToString("00") + "s";
     }
 
     private void UpdateTime(DayNightState state)
     {
         timeText.text = state == DayNightState.Day ? "DAY" : "NIGHT";
+        dayTimerText.gameObject.SetActive(state == DayNightState.Day);
     }
 
     private void UpdateEnemyCount(int count)

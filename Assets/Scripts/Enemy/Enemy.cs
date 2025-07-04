@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected GameObject explosionVFXPrefab;
     [Header("Settings")]
     [SerializeField] protected int moneyValue;
+    public static event Action<Enemy> OnAnyEnemyDied;
 
     protected virtual void Update()
     {
@@ -34,11 +36,7 @@ public abstract class Enemy : MonoBehaviour
         EnemySpawner.Instance.SetEnemyCount(EnemySpawner.Instance.GetCurrentEnemyCount() - 1);
         GameObject vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
         Destroy(vfx, 2f);
+        OnAnyEnemyDied?.Invoke(this);
         Destroy(gameObject);
-    }
-
-    public Health GetHealth()
-    {
-        return health;
     }
 }

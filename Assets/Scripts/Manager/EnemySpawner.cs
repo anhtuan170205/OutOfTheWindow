@@ -4,8 +4,8 @@ using System;
 
 public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
 {
-    public static event Action OnEveryEnemyDied;
-    public static event Action<int> OnEnemyCountChanged;
+    public event Action OnEveryEnemyDied;
+    public event Action<int> OnEnemyCountChanged;
     [Header("References")]
     [SerializeField] private List<Enemy> enemyPrefabList;
     [SerializeField] private List<Transform> spawnPointList;

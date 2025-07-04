@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class TurnManager : SingletonMonoBehaviour<TurnManager>
 {
@@ -9,6 +10,15 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
     [SerializeField] private float difficultyMultiplier = 1.2f;
     [SerializeField] private float dayDuration = 30f;
     private int currentTurn = 1;
+    public int CurrentTurn
+    {
+        get => currentTurn;
+        private set
+        {
+            currentTurn = value;
+            OnTurnChanged?.Invoke(currentTurn);
+        }
+    }
     private float dayTimer = 0f;
     public void NextTurn()
     {
@@ -37,12 +47,18 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
 
     private void OnEnable()
     {
-        EnemySpawner.OnEveryEnemyDied += HandleEveryEnemyDied;
+        StartCoroutine(WaitForEnemySpawnerAndBind());
+    }
+
+    private System.Collections.IEnumerator WaitForEnemySpawnerAndBind()
+    {
+        yield return new WaitUntil(() => EnemySpawner.Instance != null);
+        EnemySpawner.Instance.OnEveryEnemyDied += HandleEveryEnemyDied;
     }
 
     private void OnDisable()
     {
-        EnemySpawner.OnEveryEnemyDied -= HandleEveryEnemyDied;
+        EnemySpawner.Instance.OnEveryEnemyDied -= HandleEveryEnemyDied;
     }
 
     private void HandleEveryEnemyDied()
@@ -55,7 +71,6 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
         if (DayNightManager.Instance.CurrentState == DayNightState.Day)
         {
             dayTimer -= Time.deltaTime;
-            Debug.Log($"Day Timer: {dayTimer}");
             OnDayTimerChanged?.Invoke(Mathf.CeilToInt(dayTimer));
 
             if (dayTimer <= 0f)
@@ -64,8 +79,6 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
             }
         }
     }
-
-
 
     private void SetDay()
     {
@@ -81,8 +94,7 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
 
     public void SetTurn(int turn)
     {
-        currentTurn = turn;
-        OnTurnChanged?.Invoke(currentTurn);
+        CurrentTurn = turn;
     }
 
 }
