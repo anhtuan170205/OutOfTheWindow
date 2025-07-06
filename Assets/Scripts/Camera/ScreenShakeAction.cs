@@ -21,10 +21,17 @@ public class ScreenShakeAction : MonoBehaviour
             Player.Instance.GetActiveWeapon() != null &&
             Player.Instance.GetActiveWeapon().GetCurrentWeapon() != null
         );
-
+        Player.Instance.GetActiveWeapon().OnWeaponChanged += HandleWeaponChanged;
         Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnRecoil += HandleRecoil;
     }
 
+    private void HandleWeaponChanged(Weapon newWeapon)
+    {
+        if (newWeapon != null)
+        {
+            newWeapon.OnRecoil += HandleRecoil;
+        }
+    }
 
     private void HandleRecoil(float recoilStrength)
     {

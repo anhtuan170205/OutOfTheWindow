@@ -10,6 +10,7 @@ public class EnemyAmmo : Projectile
             if (player != null)
             {
                 player.TakeDamage(damageAmount);
+                Destroy(gameObject);
             }
         }
     }

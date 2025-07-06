@@ -4,6 +4,7 @@ using System;
 
 public class ActiveWeapon : MonoBehaviour
 {
+    public event Action<Weapon> OnWeaponChanged;
     [SerializeField] private InputReader inputReader;
     [SerializeField] private List<Weapon> weaponList;
     [SerializeField] private int currentWeaponIndex = 0;
@@ -18,6 +19,7 @@ public class ActiveWeapon : MonoBehaviour
             weaponList[i].Unequip();
         }
         currentWeapon.Equip();
+        OnWeaponChanged?.Invoke(currentWeapon);
     }
 
     private void OnEnable()
@@ -58,9 +60,11 @@ public class ActiveWeapon : MonoBehaviour
             }
             currentWeapon = nextWeapon;
             currentWeapon.Equip();
+            OnWeaponChanged?.Invoke(currentWeapon);
             return;
         } while (currentWeaponIndex != startIndex);
         currentWeapon.Equip();
+        OnWeaponChanged?.Invoke(currentWeapon);
     }
     private void Update()
     {

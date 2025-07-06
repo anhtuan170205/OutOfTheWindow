@@ -17,6 +17,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject WeaponModel;
     [SerializeField] protected Animator animator;
     [SerializeField] protected LayerMask ignoreLayer;
+    [SerializeField] protected GameObject ammoPrefab;
+    [SerializeField] protected Transform firePosition;
     protected int currentAmmo;
     protected int currentClipAmmo;
     protected float fireRateCooldownTimer = 0f;
@@ -157,17 +159,35 @@ public class Weapon : MonoBehaviour
 
     private void FireAmmo()
     {
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hit;
         int layerMask = ~ignoreLayer.value;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, weaponDetails.Range, layerMask))
+        Vector3 targetPosition;
+
+        if (Physics.Raycast(ray, out hit, weaponDetails.Range, layerMask))
         {
             Health health = hit.collider.GetComponent<Health>();
             if (health != null)
             {
                 health.TakeDamage(weaponDetails.Damage);
             }
+
+            targetPosition = hit.point;
+        }
+        else
+        {
+            targetPosition = Camera.main.transform.position + Camera.main.transform.forward * 100f;
+        }
+
+        GameObject ammoInstance = Instantiate(ammoPrefab, firePosition.position, Quaternion.identity);
+        Projectile projectile = ammoInstance.GetComponent<Projectile>();
+        if (projectile != null)
+        {
+            Vector3 direction = (targetPosition - firePosition.position).normalized;
+            projectile.Launch(direction);
         }
     }
+
 
     private void ChangeClipAmmo(int amount)
     {
@@ -188,5 +208,15 @@ public class Weapon : MonoBehaviour
             return;
         }
         ChangeAmmo(currentAmmo + amount);
+    }
+
+    public int GetCurrentAmmo()
+    {
+        return currentAmmo;
+    }
+    
+    public int GetCurrentClipAmmo()
+    {
+        return currentClipAmmo;
     }
 }
