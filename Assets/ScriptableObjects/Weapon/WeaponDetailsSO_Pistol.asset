@@ -21,4 +21,4 @@ MonoBehaviour:
   PrechargeTime: 0
   Damage: 40
   Range: 30
-  RecoilStrength: 0.5
+  RecoilStrength: 0.75

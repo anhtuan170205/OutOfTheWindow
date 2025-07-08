@@ -243,4 +243,4 @@ MonoBehaviour:
   damageAmount: 0
   targetLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 4294967295

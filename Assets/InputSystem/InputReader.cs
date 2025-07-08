@@ -9,6 +9,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event Action<Vector2> MoveEvent;
     public event Action<Vector2> LookEvent;
     public event Action<bool> JumpEvent;
+    public event Action DashEvent;
     public event Action<bool> ShootEvent;
     public event Action<bool> ReloadEvent;
     public event Action<bool> SwapEvent;
@@ -54,6 +55,14 @@ public class InputReader : ScriptableObject, IPlayerActions
         else if (context.canceled)
         {
             JumpEvent?.Invoke(false);
+        }
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            DashEvent?.Invoke();
         }
     }
 

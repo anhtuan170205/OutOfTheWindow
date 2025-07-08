@@ -6,17 +6,30 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private InputReader input;
 
-    [Header("Player")]
+    [Header("Move")]
     public float MoveSpeed = 4.0f;
     public float RotationSpeed = 1.0f;
 
     [Space(10)]
+    [Header("Jump")]
     public float JumpHeight = 1.2f;
     public float Gravity = -15.0f;
 
     [Space(10)]
     public float JumpTimeout = 0.1f;
     public float FallTimeout = 0.15f;
+
+    [Space(10)]
+    [Header("Dash")]
+    public float MaxDashCooldownPool = 15f;
+    public float DashSpeed = 10.0f;
+    public float DashDuration = 0.5f;
+    public float DashCost = 5f;
+    public float DashCooldownRate = 2f;
+    private bool isDashing = false;
+    private float dashTimer;
+    private Vector3 dashDirection;
+    private float currentDashPool;
 
     [Header("Player Grounded")]
     public bool Grounded = true;
@@ -71,6 +84,7 @@ public class PlayerController : MonoBehaviour
         // reset our timeouts on start
         jumpTimeoutDelta = JumpTimeout;
         fallTimeoutDelta = FallTimeout;
+        currentDashPool = MaxDashCooldownPool;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -81,6 +95,7 @@ public class PlayerController : MonoBehaviour
         input.MoveEvent += OnMove;
         input.LookEvent += OnLook;
         input.JumpEvent += OnJump;
+        input.DashEvent += OnDash;
     }
 
     private void OnDisable()
@@ -88,6 +103,7 @@ public class PlayerController : MonoBehaviour
         input.MoveEvent -= OnMove;
         input.LookEvent -= OnLook;
         input.JumpEvent -= OnJump;
+        input.DashEvent -= OnDash;
     }
 
     private void OnMove(Vector2 newMoveDirection)
@@ -102,12 +118,24 @@ public class PlayerController : MonoBehaviour
     {
         jumpPressed = newJumpState;
     }
+    private void OnDash()
+    {
+        if (isDashing) return;
+        if (currentDashPool < DashCost) return;
+
+        isDashing = true;
+        currentDashPool -= DashCost;
+        dashTimer = DashDuration;
+        dashDirection = transform.forward;
+    }
 
     private void Update()
     {
         JumpAndGravity();
         GroundedCheck();
         Move();
+        HandleDash();
+        RefillDashPool();
     }
 
     private void LateUpdate()
@@ -159,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
         float inputMagnitude = input.analogMovement ? move.magnitude : 1f;
 
-        speed = targetSpeed;
+        speed = isDashing ? DashSpeed : targetSpeed;
 
         // normalise input direction
         Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
@@ -169,7 +197,14 @@ public class PlayerController : MonoBehaviour
         if (move != Vector2.zero)
         {
             // move
-            inputDirection = transform.right * move.x + transform.forward * move.y;
+            if (isDashing)
+            {
+                inputDirection = dashDirection;
+            }
+            else
+            {
+                inputDirection = transform.right * move.x + transform.forward * move.y;
+            }
         }
 
         // move the player
@@ -229,6 +264,28 @@ public class PlayerController : MonoBehaviour
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+
+    private void HandleDash()
+    {
+        if (isDashing)
+        {
+            dashTimer -= Time.deltaTime;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+            }
+        }
+    }
+
+    private void RefillDashPool()
+    {
+        if (currentDashPool < MaxDashCooldownPool)
+        {
+            currentDashPool += Time.deltaTime * DashCooldownRate;
+            currentDashPool = Mathf.Min(currentDashPool, MaxDashCooldownPool);
+            Debug.Log($"Current Dash Pool: {currentDashPool}");
+        }
     }
 
 }
