@@ -27,6 +27,7 @@ public class ActiveWeapon : MonoBehaviour
         inputReader.ShootEvent += HandleShoot;
         inputReader.ReloadEvent += HandleReload;
         inputReader.SwapEvent += HandleSwap;
+        inputReader.AimEvent += HandleAim;
     }
 
     private void OnDisable()
@@ -34,6 +35,7 @@ public class ActiveWeapon : MonoBehaviour
         inputReader.ShootEvent -= HandleShoot;
         inputReader.ReloadEvent -= HandleReload;
         inputReader.SwapEvent -= HandleSwap;
+        inputReader.AimEvent -= HandleAim;
     }
 
     private void HandleShoot(bool isShooting)
@@ -66,6 +68,12 @@ public class ActiveWeapon : MonoBehaviour
         currentWeapon.Equip();
         OnWeaponChanged?.Invoke(currentWeapon);
     }
+
+    private void HandleAim(bool isAiming)
+    {
+        currentWeapon.Aim(isAiming);
+    }
+
     private void Update()
     {
         if (isFiring)

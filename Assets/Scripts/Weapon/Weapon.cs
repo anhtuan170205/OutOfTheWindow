@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
     protected bool isReloading = false;
     protected int shootString = Animator.StringToHash("Shoot");
     protected int reloadString = Animator.StringToHash("Reload");
-
+    protected int aimString = Animator.StringToHash("Aim");
 
     public virtual void Shoot()
     {
@@ -214,9 +214,14 @@ public class Weapon : MonoBehaviour
     {
         return currentAmmo;
     }
-    
+
     public int GetCurrentClipAmmo()
     {
         return currentClipAmmo;
+    }
+
+    public void Aim(bool isAiming)
+    {
+        animator.SetBool(aimString, isAiming);
     }
 }

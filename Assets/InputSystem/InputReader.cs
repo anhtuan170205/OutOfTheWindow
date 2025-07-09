@@ -8,6 +8,7 @@ public class InputReader : ScriptableObject, IPlayerActions
 {
     public event Action<Vector2> MoveEvent;
     public event Action<Vector2> LookEvent;
+    public event Action<bool> AimEvent;
     public event Action<bool> JumpEvent;
     public event Action DashEvent;
     public event Action<bool> ShootEvent;
@@ -45,7 +46,19 @@ public class InputReader : ScriptableObject, IPlayerActions
     {
         LookEvent?.Invoke(context.ReadValue<Vector2>());
     }
-
+    
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            AimEvent?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            AimEvent?.Invoke(false);
+        }
+    }
+    
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
