@@ -7,7 +7,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UpperBody
+  m_Name: ShootLayer
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2960507206629610441}
@@ -173,7 +173,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: UpperBody
+    m_Name: ShootLayer
     m_StateMachine: {fileID: -8349487020557111889}
     m_Mask: {fileID: 0}
     m_Motions: []
