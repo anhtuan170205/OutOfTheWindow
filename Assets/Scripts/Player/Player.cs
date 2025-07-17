@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System;
 public class Player : SingletonMonoBehaviour<Player>
 {
     [Header("References")]
@@ -7,6 +7,9 @@ public class Player : SingletonMonoBehaviour<Player>
     [SerializeField] private Shield shield;
     [SerializeField] private MoneyWallet moneyWallet;
     [SerializeField] private ActiveWeapon activeWeapon;
+    [SerializeField] private float screenShakeStrength = 1.0f;
+
+    public event Action<float> OnPlayerDamaged;
 
     private void OnEnable()
     {
@@ -32,6 +35,8 @@ public class Player : SingletonMonoBehaviour<Player>
         {
             health.TakeDamage(damage);
         }
+        OnPlayerDamaged?.Invoke(screenShakeStrength);
+
     }
 
     public Health GetHealth()

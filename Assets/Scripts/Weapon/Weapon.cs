@@ -176,14 +176,14 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            targetPosition = Camera.main.transform.position + Camera.main.transform.forward * 100f;
+            targetPosition = Camera.main.transform.position + Camera.main.transform.forward * 50f;
         }
 
         GameObject ammoInstance = Instantiate(ammoPrefab, firePosition.position, Quaternion.identity);
         Projectile projectile = ammoInstance.GetComponent<Projectile>();
         if (projectile != null)
         {
-            Vector3 direction = (targetPosition - firePosition.position).normalized;
+            Vector3 direction = (targetPosition - firePosition.position).normalized + Vector3.down * 0.005f;
             projectile.Launch(direction);
         }
     }

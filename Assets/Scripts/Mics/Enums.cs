@@ -23,3 +23,9 @@ public enum ShopItemType
     RifleAmmo
 }
 
+public enum ShakeSourceType
+{
+    Recoil,
+    Damaged
+}
+

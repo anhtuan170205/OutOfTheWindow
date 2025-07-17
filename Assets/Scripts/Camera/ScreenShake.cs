@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 
-public class ScreenShake : SingletonMonoBehaviour<ScreenShake>
+public class ScreenShake : MonoBehaviour
 {
     private CinemachineImpulseSource impulseSource;
     private void Start()
