@@ -16,6 +16,9 @@ public class HUDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayTimerText;
     [SerializeField] private TextMeshProUGUI enemyCountText;
     [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private Slider DashSlider1;
+    [SerializeField] private Slider DashSlider2;
+    [SerializeField] private Slider DashSlider3;
 
     private float maxShield = 100f;
     private float maxHealth = 100f;
@@ -50,6 +53,7 @@ public class HUDisplay : MonoBehaviour
         Player.Instance.GetShield().OnShieldChanged += UpdateShield;
         Player.Instance.GetShield().OnMaxShieldChanged += (max) => { maxShield = max; };
         Player.Instance.GetMoneyWallet().OnMoneyChanged += UpdateMoney;
+        PlayerController.OnDashPoolChanged += UpdateDash;
     }
 
     private void OnDisable()
@@ -173,4 +177,17 @@ public class HUDisplay : MonoBehaviour
     {
         moneyText.text = "MONEY : " + money.ToString("0000") + " $";
     }
+
+    private void UpdateDash(float currentDashPool)
+    {
+        UpdateDashSlider(DashSlider1, (currentDashPool - 0f) / 4f);
+        UpdateDashSlider(DashSlider2, (currentDashPool - 4f) / 4f);
+        UpdateDashSlider(DashSlider3, (currentDashPool - 8f) / 4f);
+    }
+
+    private void UpdateDashSlider(Slider slider, float normalizedValue)
+    {
+        slider.value = Mathf.Clamp01(normalizedValue);
+    }
+
 }

@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private float dashTimer;
     private Vector3 dashDirection;
     private float currentDashPool;
+    public static event Action<float> OnDashPoolChanged;
 
     [Header("Player Grounded")]
     public bool Grounded = true;
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour
         jumpTimeoutDelta = JumpTimeout;
         fallTimeoutDelta = FallTimeout;
         currentDashPool = MaxDashCooldownPool;
+        OnDashPoolChanged?.Invoke(currentDashPool);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -125,6 +127,7 @@ public class PlayerController : MonoBehaviour
 
         isDashing = true;
         currentDashPool -= DashCost;
+        OnDashPoolChanged?.Invoke(currentDashPool);
         dashTimer = DashDuration;
         dashDirection = transform.forward;
     }
@@ -284,7 +287,7 @@ public class PlayerController : MonoBehaviour
         {
             currentDashPool += Time.deltaTime * DashCooldownRate;
             currentDashPool = Mathf.Min(currentDashPool, MaxDashCooldownPool);
-            Debug.Log($"Current Dash Pool: {currentDashPool}");
+            OnDashPoolChanged?.Invoke(currentDashPool);
         }
     }
 
