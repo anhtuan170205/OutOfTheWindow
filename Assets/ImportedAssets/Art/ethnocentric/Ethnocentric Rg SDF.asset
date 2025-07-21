@@ -47,9 +47,11 @@ Material:
     m_Floats:
     - _Ambient: 0.5
     - _Bevel: 0.5
+    - _BevelAmount: 0.25
     - _BevelClamp: 0
     - _BevelOffset: 0
     - _BevelRoundness: 0
+    - _BevelType: 0
     - _BevelWidth: 0
     - _BumpFace: 0
     - _BumpOutline: 0
@@ -57,6 +59,7 @@ Material:
     - _CullMode: 0
     - _Diffuse: 0.5
     - _FaceDilate: 0
+    - _FaceShininess: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlowInner: 0.05
@@ -67,6 +70,8 @@ Material:
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
+    - _OutlineMode: 0
+    - _OutlineShininess: 0
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
@@ -92,21 +97,36 @@ Material:
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
     - _UnderlaySoftness: 0
+    - _UseUIAlphaClip: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75
     - _WeightNormal: 0
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FaceText_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _FaceUVSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
+    - _IsoPerimeter: {r: 0, g: 0, b: 0, a: 0}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor1: {r: 0, g: 1, b: 1, a: 1}
+    - _OutlineColor2: {r: 0.009433985, g: 0.02534519, b: 1, a: 1}
+    - _OutlineColor3: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineOffset1: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineOffset2: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineOffset3: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineUVSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Softness: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayOffset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &11400000
