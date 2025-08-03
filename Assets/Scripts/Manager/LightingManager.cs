@@ -1,23 +1,12 @@
 using UnityEngine;
-using System;
 using UnityEngine.Rendering;
 
-public class LightingManager : SingletonMonoBehaviour<LightingManager>
+public class LightingManager : MonoBehaviour
 {
     [SerializeField] private Material daySkybox;
     [SerializeField] private Material nightSkybox;
 
-    private void OnEnable()
-    {
-        DayNightManager.Instance.OnStateChanged += UpdateLighting;
-    }
-
-    private void OnDisable()
-    {
-        DayNightManager.Instance.OnStateChanged -= UpdateLighting;
-    }
-
-    private void UpdateLighting(DayNightState state)
+    public void UpdateLighting(DayNightState state)
     {
         switch (state)
         {

@@ -1,15 +1,24 @@
 using UnityEngine;
 using System;
-using System.Collections;
 
-public class TurnManager : SingletonMonoBehaviour<TurnManager>
+public class TurnManager : MonoBehaviour
 {
     public event Action<int> OnTurnChanged;
     public event Action<int> OnDayTimerChanged;
+
+    [Header("Config")]
     [SerializeField] private int baseEnemyCount = 5;
     [SerializeField] private float difficultyMultiplier = 1.2f;
     [SerializeField] private float dayDuration = 30f;
+
+    [Header("References")]
+    [SerializeField] private DayNightManager dayNightManager;
+    [SerializeField] private LightingManager lightingManager;
+    [SerializeField] private EnemySpawner enemySpawner;
+
     private int currentTurn = 1;
+    private float dayTimer = 0f;
+
     public int CurrentTurn
     {
         get => currentTurn;
@@ -19,56 +28,25 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
             OnTurnChanged?.Invoke(currentTurn);
         }
     }
-    private float dayTimer = 0f;
-    public void NextTurn()
+
+    private void OnEnable()
     {
-        SetTurn(currentTurn + 1);
-        SetDay();
+        enemySpawner.OnEveryEnemyDied += HandleEveryEnemyDied;
     }
 
-
-    public int GetEnemyForCurrentTurn()
+    private void OnDisable()
     {
-        int enemyCount = Mathf.CeilToInt(baseEnemyCount * Mathf.Pow(difficultyMultiplier, currentTurn));
-        return enemyCount;
+        enemySpawner.OnEveryEnemyDied -= HandleEveryEnemyDied;
     }
-
-    public void ResetTurn()
-    {
-        SetTurn(1);
-        SetDay();
-    }
-
 
     private void Start()
     {
         ResetTurn();
     }
 
-    private void OnEnable()
-    {
-        StartCoroutine(WaitForEnemySpawnerAndBind());
-    }
-
-    private System.Collections.IEnumerator WaitForEnemySpawnerAndBind()
-    {
-        yield return new WaitUntil(() => EnemySpawner.Instance != null);
-        EnemySpawner.Instance.OnEveryEnemyDied += HandleEveryEnemyDied;
-    }
-
-    private void OnDisable()
-    {
-        EnemySpawner.Instance.OnEveryEnemyDied -= HandleEveryEnemyDied;
-    }
-
-    private void HandleEveryEnemyDied()
-    {
-        NextTurn();
-    }
-
     private void Update()
     {
-        if (DayNightManager.Instance.CurrentState == DayNightState.Day)
+        if (dayNightManager.CurrentState == DayNightState.Day)
         {
             dayTimer -= Time.deltaTime;
             OnDayTimerChanged?.Invoke(Mathf.CeilToInt(dayTimer));
@@ -80,16 +58,21 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
         }
     }
 
-    private void SetDay()
+    public void ResetTurn()
     {
-        DayNightManager.Instance.SetState(DayNightState.Day);
-        dayTimer = dayDuration;
+        SetTurn(1);
+        SetDay();
     }
 
-    private void SetNight()
+    public void NextTurn()
     {
-        DayNightManager.Instance.SetState(DayNightState.Night);
-        EnemySpawner.Instance.StartSpawning(GetEnemyForCurrentTurn());
+        SetTurn(currentTurn + 1);
+        SetDay();
+    }
+
+    public int GetEnemyForCurrentTurn()
+    {
+        return Mathf.CeilToInt(baseEnemyCount * Mathf.Pow(difficultyMultiplier, currentTurn));
     }
 
     public void SetTurn(int turn)
@@ -97,4 +80,27 @@ public class TurnManager : SingletonMonoBehaviour<TurnManager>
         CurrentTurn = turn;
     }
 
+    private void SetDay()
+    {
+        dayNightManager.SetState(DayNightState.Day);
+        lightingManager.UpdateLighting(DayNightState.Day);
+        dayTimer = dayDuration;
+    }
+
+    private void SetNight()
+    {
+        dayNightManager.SetState(DayNightState.Night);
+        lightingManager.UpdateLighting(DayNightState.Night);
+        enemySpawner.StartSpawning(GetEnemyForCurrentTurn());
+    }
+
+    private void HandleEveryEnemyDied()
+    {
+        NextTurn();
+    }
+
+    // Expose references if needed elsewhere
+    public EnemySpawner GetEnemySpawner() => enemySpawner;
+    public DayNightManager GetDayNightManager() => dayNightManager;
+    public LightingManager GetLightingManager() => lightingManager;
 }

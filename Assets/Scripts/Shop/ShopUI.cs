@@ -23,7 +23,7 @@ public class ShopUI : MonoBehaviour
 
     private void ToggleShop(bool isOpen)
     {
-        if (DayNightManager.Instance.CurrentState == DayNightState.Night)
+        if (BootstrappedData.Instance.TurnManager.GetDayNightManager().CurrentState == DayNightState.Night)
         {
             return;
         }

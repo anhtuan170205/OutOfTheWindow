@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
+public class EnemySpawner : MonoBehaviour
 {
     public event Action OnEveryEnemyDied;
     public event Action<int> OnEnemyCountChanged;
@@ -36,13 +36,14 @@ public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
 
     public void StartSpawning(int totalEnemy)
     {
-        enemyToSpawn = TurnManager.Instance.GetEnemyForCurrentTurn();
+        enemyToSpawn = totalEnemy;
         enemySpawned = 0;
         spawnTimer = spawnInterval;
         isSpawning = true;
         spawnedEnemyList.Clear();
         SetEnemyCount(enemyToSpawn);
     }
+
 
     private void SpawnEnemy()
     {

@@ -39,24 +39,8 @@ public class Player : SingletonMonoBehaviour<Player>
 
     }
 
-    public Health GetHealth()
-    {
-        return health;
-    }
-
-    public Shield GetShield()
-    {
-        return shield;
-    }
-
-    public MoneyWallet GetMoneyWallet()
-    {
-        return moneyWallet;
-    }
-
-    public ActiveWeapon GetActiveWeapon()
-    {
-        return activeWeapon;
-    }
-    
+    public Health GetHealth() => health;
+    public Shield GetShield() => shield;
+    public MoneyWallet GetMoneyWallet() => moneyWallet;
+    public ActiveWeapon GetActiveWeapon() => activeWeapon;
 }

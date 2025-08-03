@@ -1,36 +1,47 @@
 using UnityEngine;
 using System;
 
-public class GameManager : SingletonMonoBehaviour<GameManager>
+public class GameManager : MonoBehaviour
 {
     [SerializeField] private InputReader inputReader;
-    public static GameState CurrentGameState;
-    public static event Action<GameState> OnGameStateChanged;
 
-    private void Start()
+    [SerializeField] private GameState currentGameState = GameState.MainMenu;
+    public GameState CurrentGameState => currentGameState;
+
+    public event Action<GameState> OnGameStateChanged;
+
+    private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        inputReader.PauseEvent += HandlePause;
-        SetGameState(GameState.MainMenu);
+        if (inputReader != null)
+        {
+            inputReader.PauseEvent += HandlePause;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (inputReader != null)
+        {
+            inputReader.PauseEvent -= HandlePause;
+        }
     }
 
     public void SetGameState(GameState newState)
     {
-        if (CurrentGameState == newState)
-        {
+        if (currentGameState == newState)
             return;
-        }
-        CurrentGameState = newState;
+
+        currentGameState = newState;
         OnGameStateChanged?.Invoke(newState);
     }
 
     private void HandlePause()
     {
-        if (CurrentGameState == GameState.InGame)
+        if (currentGameState == GameState.InGame)
         {
             PauseGame();
         }
-        else if (CurrentGameState == GameState.Paused)
+        else if (currentGameState == GameState.Paused)
         {
             ResumeGame();
         }

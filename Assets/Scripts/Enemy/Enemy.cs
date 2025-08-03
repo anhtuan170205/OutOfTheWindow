@@ -8,10 +8,14 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Health health;
     [SerializeField] protected NavMeshAgent navMeshAgent;
     [SerializeField] protected GameObject explosionVFXPrefab;
+
     [Header("Settings")]
     [SerializeField] protected int moneyValue;
+
     public static event Action<Enemy> OnAnyEnemyDied;
 
+    private Player player => Player.Instance;
+    private TurnManager turnManager => BootstrappedData.Instance.TurnManager;
     protected virtual void Update()
     {
         Move();
@@ -32,10 +36,14 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void HandleEnemyDied()
     {
-        Player.Instance.GetMoneyWallet().AddMoney(moneyValue);
-        EnemySpawner.Instance.SetEnemyCount(EnemySpawner.Instance.GetCurrentEnemyCount() - 1);
+        player.GetMoneyWallet().AddMoney(moneyValue);
+
+        var spawner = turnManager.GetEnemySpawner();
+        spawner.SetEnemyCount(spawner.GetCurrentEnemyCount() - 1);
+
         GameObject vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);
         Destroy(vfx, 2f);
+
         OnAnyEnemyDied?.Invoke(this);
         Destroy(gameObject);
     }
