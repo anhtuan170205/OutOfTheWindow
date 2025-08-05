@@ -6,13 +6,15 @@ public class EnemySpawner : MonoBehaviour
 {
     public event Action OnEveryEnemyDied;
     public event Action<int> OnEnemyCountChanged;
+
     [Header("References")]
     [SerializeField] private List<Enemy> enemyPrefabList;
-    [SerializeField] private List<Transform> spawnPointList;
-    [Header("Settings")]
-    [SerializeField] private float spawnInterval = 2;
-    private List<Enemy> spawnedEnemyList = new List<Enemy>();
+    [SerializeField] private List<Vector3> spawnPointList;
 
+    [Header("Settings")]
+    [SerializeField] private float spawnInterval = 2f;
+
+    private List<Enemy> spawnedEnemyList = new List<Enemy>();
     private int enemyToSpawn;
     private int enemySpawned;
     private float spawnTimer;
@@ -22,15 +24,15 @@ public class EnemySpawner : MonoBehaviour
     private void Update()
     {
         if (!isSpawning)
-        {
             return;
-        }
+
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0 && enemySpawned < enemyToSpawn)
         {
             SpawnEnemy();
             spawnTimer = spawnInterval;
         }
+
         CheckAllEnemiesDied();
     }
 
@@ -44,14 +46,17 @@ public class EnemySpawner : MonoBehaviour
         SetEnemyCount(enemyToSpawn);
     }
 
-
     private void SpawnEnemy()
     {
         int randomEnemyIndex = UnityEngine.Random.Range(0, enemyPrefabList.Count);
         int randomSpawnPointIndex = UnityEngine.Random.Range(0, spawnPointList.Count);
-        Enemy enemy = Instantiate(enemyPrefabList[randomEnemyIndex], spawnPointList[randomSpawnPointIndex].position, Quaternion.identity);
+
+        Vector3 spawnPosition = spawnPointList[randomSpawnPointIndex];
+        Enemy enemy = Instantiate(enemyPrefabList[randomEnemyIndex], spawnPosition, Quaternion.identity);
+
         spawnedEnemyList.Add(enemy);
         enemySpawned++;
+        Debug.Log($"Spawned enemy {enemy.name}. Total spawned: {enemySpawned}/{enemyToSpawn}");
     }
 
     private void CheckAllEnemiesDied()
@@ -70,8 +75,5 @@ public class EnemySpawner : MonoBehaviour
         OnEnemyCountChanged?.Invoke(currentEnemyCount);
     }
 
-    public int GetCurrentEnemyCount()
-    {
-        return currentEnemyCount;
-    }
+    public int GetCurrentEnemyCount() => currentEnemyCount;
 }

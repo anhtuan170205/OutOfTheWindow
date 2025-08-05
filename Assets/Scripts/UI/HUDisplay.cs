@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 public class HUDisplay : MonoBehaviour
 {
@@ -26,21 +27,25 @@ public class HUDisplay : MonoBehaviour
     private Player player => Player.Instance;
     private TurnManager turnManager => BootstrappedData.Instance.TurnManager;
 
-    private void OnEnable()
-    {
-        if (player == null || turnManager == null) return;
-        Bind();
-    }
-
     private void OnDisable()
     {
         if (player == null || turnManager == null) return;
         Unbind();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        if (turnManager == null) return;
+        yield return new WaitUntil(() =>
+            Player.Instance != null &&
+            Player.Instance.GetActiveWeapon() != null &&
+            Player.Instance.GetActiveWeapon().GetCurrentWeapon() != null &&
+            Player.Instance.GetHealth() != null &&
+            Player.Instance.GetShield() != null &&
+            Player.Instance.GetMoneyWallet() != null
+        );
+
+        Bind();
+
         dayTimerText.gameObject.SetActive(true);
         UpdateTime(turnManager.GetDayNightManager().CurrentState);
         UpdateEnemyCount(0);

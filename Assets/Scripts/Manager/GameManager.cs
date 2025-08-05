@@ -1,31 +1,13 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private InputReader inputReader;
-
-    [SerializeField] private GameState currentGameState = GameState.MainMenu;
+    private GameState currentGameState = GameState.MainMenu;
     public GameState CurrentGameState => currentGameState;
 
     public event Action<GameState> OnGameStateChanged;
-
-    private void Awake()
-    {
-        if (inputReader != null)
-        {
-            inputReader.PauseEvent += HandlePause;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (inputReader != null)
-        {
-            inputReader.PauseEvent -= HandlePause;
-        }
-    }
-
     public void SetGameState(GameState newState)
     {
         if (currentGameState == newState)
@@ -35,22 +17,32 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
     }
 
-    private void HandlePause()
+    private void Awake()
     {
-        if (currentGameState == GameState.InGame)
+        Debug.Log($"[GameManager] Awake in scene: {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
+
+        if (BootstrappedData.Instance.GameManager != this)
         {
-            PauseGame();
+            Debug.LogWarning("[GameManager] This instance is not the Bootstrapped one. Destroying.");
+            Destroy(gameObject);
+            return;
         }
-        else if (currentGameState == GameState.Paused)
-        {
-            ResumeGame();
-        }
+
+        Debug.Log("[GameManager] Bootstrapped instance confirmed.");
     }
+
 
     public void StartGame()
     {
+        Debug.Log("Starting Game");
         SetGameState(GameState.InGame);
         Time.timeScale = 1f;
+        BootstrappedData.Instance.StartCoroutine(DelayedGameLoad());
+    }
+
+    private IEnumerator DelayedGameLoad()
+    {
+        yield return null;
         SceneLoader.LoadGame();
     }
 
@@ -77,4 +69,16 @@ public class GameManager : MonoBehaviour
     {
         SceneLoader.QuitGame();
     }
+
+    private GameState lastLoggedState;
+
+    private void Update()
+    {
+        if (currentGameState != lastLoggedState)
+        {
+            Debug.Log($"[GameManager] Game State changed to: {currentGameState}");
+            lastLoggedState = currentGameState;
+        }
+    }
+
 }

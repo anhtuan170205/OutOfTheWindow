@@ -138,13 +138,12 @@ MonoBehaviour:
   - {fileID: 4532104904013925748, guid: 9fb8ceae5348547d3802ae084cf44927, type: 3}
   - {fileID: 7697362406829913231, guid: 2d60b45311fef42b69bbe6fe6484a41e, type: 3}
   spawnPointList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {x: -5, y: 2, z: 3}
+  - {x: -25, y: 2, z: 3}
+  - {x: -34, y: 2, z: -15}
+  - {x: -34, y: 2, z: -25}
+  - {x: 14, y: 2, z: -25}
+  - {x: 14, y: 2, z: -15}
   spawnInterval: 2
 --- !u!1 &7315405461127834471
 GameObject:

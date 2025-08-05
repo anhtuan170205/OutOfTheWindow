@@ -53,6 +53,7 @@ public class TurnManager : MonoBehaviour
 
             if (dayTimer <= 0f)
             {
+                Debug.Log("Day ended. Switching to night.");
                 SetNight();
             }
         }
@@ -96,10 +97,10 @@ public class TurnManager : MonoBehaviour
 
     private void HandleEveryEnemyDied()
     {
+        Debug.Log("All enemies defeated. Proceeding to next turn.");
         NextTurn();
     }
 
-    // Expose references if needed elsewhere
     public EnemySpawner GetEnemySpawner() => enemySpawner;
     public DayNightManager GetDayNightManager() => dayNightManager;
     public LightingManager GetLightingManager() => lightingManager;

@@ -455,7 +455,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1479264296}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -564,8 +564,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: You have survived 00 nights
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
-  m_sharedMaterial: {fileID: -3507794060122094976, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
+  m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -700,8 +700,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: REPLAY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
-  m_sharedMaterial: {fileID: -3507794060122094976, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
+  m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -903,8 +903,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
-  m_sharedMaterial: {fileID: -3507794060122094976, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
+  m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1479264296}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -1186,74 +1186,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ee6b4e96d25e3e4f9f31ed5e2666cdb, type: 3}
---- !u!1001 &1479264295
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3230486560688270481, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5059920823639346646, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-      propertyPath: m_Name
-      value: GameManager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
---- !u!114 &1479264296 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4097089369668697443, guid: 1090ad63ef13642ba832255abc59c8ca, type: 3}
-  m_PrefabInstance: {fileID: 1479264295}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d839252f099224d45b3effe4892e69ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1628971311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,8 +1366,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: MAIN MENU
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
-  m_sharedMaterial: {fileID: -3507794060122094976, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
+  m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1757,7 +1689,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1479264296}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: LoadMainMenu
         m_Mode: 1
@@ -1866,8 +1798,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: GAME OVER
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
-  m_sharedMaterial: {fileID: -3507794060122094976, guid: b3b932c0d3ecf407ebb79f75f6b91a05, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
+  m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1951,5 +1883,4 @@ SceneRoots:
   - {fileID: 1628971313}
   - {fileID: 1939768436}
   - {fileID: 519377388}
-  - {fileID: 1479264295}
   - {fileID: 1921139428}

@@ -7,7 +7,7 @@ public class Bootstrapper : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
-            SceneManager.LoadScene("Game", LoadSceneMode.Single);
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
     }
 }
