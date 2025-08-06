@@ -8,6 +8,7 @@ public enum DayNightState
 
 public enum GameState
 {
+    Bootstrap,
     MainMenu,
     InGame,
     Paused,

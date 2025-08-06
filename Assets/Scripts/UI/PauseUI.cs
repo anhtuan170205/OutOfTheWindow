@@ -17,20 +17,27 @@ public class PauseUI : MonoBehaviour
 
     private void HandlePause()
     {
-        Debug.Log("Pause Event Triggered");
         if (BootstrappedData.Instance.GameManager.CurrentGameState == GameState.InGame)
         {
-            BootstrappedData.Instance.GameManager.SetGameState(GameState.Paused);
-            Debug.Log("Game Paused");
-            Time.timeScale = 0f;
-            pausePanel.SetActive(true);
+            PauseGame();
         }
         else if (BootstrappedData.Instance.GameManager.CurrentGameState == GameState.Paused)
         {
-            BootstrappedData.Instance.GameManager.SetGameState(GameState.InGame);
-            Debug.Log("Game Resumed");
-            Time.timeScale = 1f;
-            pausePanel.SetActive(false);
+            ResumeGame();
         }
+    }
+
+    public void PauseGame()
+    {
+        BootstrappedData.Instance.GameManager.SetGameState(GameState.Paused);
+        Time.timeScale = 0f;
+        pausePanel.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        BootstrappedData.Instance.GameManager.SetGameState(GameState.InGame);
+        Time.timeScale = 1f;
+        pausePanel.SetActive(false);
     }
 }

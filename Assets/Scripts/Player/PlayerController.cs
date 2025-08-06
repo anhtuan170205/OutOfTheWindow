@@ -87,8 +87,6 @@ public class PlayerController : MonoBehaviour
         fallTimeoutDelta = FallTimeout;
         currentDashPool = MaxDashCooldownPool;
         OnDashPoolChanged?.Invoke(currentDashPool);
-
-        HandleGameStateChange(BootstrappedData.Instance.GameManager.CurrentGameState);
     }
 
     private void OnEnable()
@@ -97,7 +95,6 @@ public class PlayerController : MonoBehaviour
         input.LookEvent += OnLook;
         input.JumpEvent += OnJump;
         input.DashEvent += OnDash;
-        BootstrappedData.Instance.GameManager.OnGameStateChanged += HandleGameStateChange;
     }
 
     private void OnDisable()
@@ -106,7 +103,6 @@ public class PlayerController : MonoBehaviour
         input.LookEvent -= OnLook;
         input.JumpEvent -= OnJump;
         input.DashEvent -= OnDash;
-        BootstrappedData.Instance.GameManager.OnGameStateChanged -= HandleGameStateChange;
     }
 
     private void OnMove(Vector2 newMoveDirection)
@@ -291,19 +287,4 @@ public class PlayerController : MonoBehaviour
             OnDashPoolChanged?.Invoke(currentDashPool);
         }
     }
-
-    private void HandleGameStateChange(GameState newState)
-    {
-        if (newState == GameState.InGame)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else if (newState == GameState.Paused)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-    }
-
 }

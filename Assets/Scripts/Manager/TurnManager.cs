@@ -6,15 +6,19 @@ public class TurnManager : MonoBehaviour
     public event Action<int> OnTurnChanged;
     public event Action<int> OnDayTimerChanged;
 
-    [Header("Config")]
-    [SerializeField] private int baseEnemyCount = 5;
-    [SerializeField] private float difficultyMultiplier = 1.2f;
-    [SerializeField] private float dayDuration = 30f;
-
     [Header("References")]
     [SerializeField] private DayNightManager dayNightManager;
     [SerializeField] private LightingManager lightingManager;
     [SerializeField] private EnemySpawner enemySpawner;
+
+    [Header("Settings")]
+    [SerializeField] private int baseEnemyCount = 10;
+    [SerializeField] private float difficultyMultiplier = 1.2f;
+    [SerializeField] private float dayDuration = 15f;
+
+    private GameManager gameManager;
+    private GameState previousState = GameState.Bootstrap;
+    private bool isActive = false;
 
     private int currentTurn = 1;
     private float dayTimer = 0f;
@@ -29,23 +33,41 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        gameManager = BootstrappedData.Instance.GameManager;
+    }
+
     private void OnEnable()
     {
         enemySpawner.OnEveryEnemyDied += HandleEveryEnemyDied;
+        gameManager.OnGameStateChanged += HandleGameStateChanged;
     }
 
     private void OnDisable()
     {
         enemySpawner.OnEveryEnemyDied -= HandleEveryEnemyDied;
+        gameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
 
     private void Start()
     {
-        ResetTurn();
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager is not initialized in TurnManager.");
+            return;
+        }
+        if (gameManager != null && gameManager.CurrentGameState == GameState.InGame)
+        {
+            isActive = true;
+            ResetTurn();
+        }
     }
 
     private void Update()
     {
+        if (!isActive) return;
+
         if (dayNightManager.CurrentState == DayNightState.Day)
         {
             dayTimer -= Time.deltaTime;
@@ -53,7 +75,6 @@ public class TurnManager : MonoBehaviour
 
             if (dayTimer <= 0f)
             {
-                Debug.Log("Day ended. Switching to night.");
                 SetNight();
             }
         }
@@ -61,12 +82,14 @@ public class TurnManager : MonoBehaviour
 
     public void ResetTurn()
     {
+        if (!isActive) return;
         SetTurn(1);
         SetDay();
     }
 
     public void NextTurn()
     {
+        if (!isActive) return;
         SetTurn(currentTurn + 1);
         SetDay();
     }
@@ -97,8 +120,24 @@ public class TurnManager : MonoBehaviour
 
     private void HandleEveryEnemyDied()
     {
-        Debug.Log("All enemies defeated. Proceeding to next turn.");
+        if (!isActive) return;
         NextTurn();
+    }
+
+    private void HandleGameStateChanged(GameState newState)
+    {
+        bool wasPaused = (previousState == GameState.Paused);
+        previousState = newState;
+
+        isActive = (newState == GameState.InGame);
+
+        if (isActive)
+        {
+            if (!wasPaused)
+            {
+                ResetTurn();
+            }
+        }
     }
 
     public EnemySpawner GetEnemySpawner() => enemySpawner;

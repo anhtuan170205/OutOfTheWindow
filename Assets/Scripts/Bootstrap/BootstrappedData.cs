@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BootstrappedData : SingletonMonoBehaviour<BootstrappedData>
 {
-    public TurnManager TurnManager { get; private set; }
     public GameManager GameManager { get; private set; }
+    public TurnManager TurnManager { get; private set; }
     public AudioManager AudioManager { get; private set; }
 
     protected override void Awake()
@@ -11,8 +11,8 @@ public class BootstrappedData : SingletonMonoBehaviour<BootstrappedData>
         base.Awake();
         DontDestroyOnLoad(gameObject);
 
-        TurnManager = GetComponentInChildren<TurnManager>(true);
         GameManager = GetComponentInChildren<GameManager>(true);
+        TurnManager = GetComponentInChildren<TurnManager>(true);
         AudioManager = GetComponentInChildren<AudioManager>(true);
     }
 

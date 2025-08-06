@@ -3,10 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class Bootstrapper : MonoBehaviour
 {
-    public void Update()
+    private bool hasLoaded = false;
+
+    private void Start()
     {
-        if (Input.anyKeyDown)
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        if (!hasLoaded && Input.anyKeyDown)
         {
+            hasLoaded = true;
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
     }

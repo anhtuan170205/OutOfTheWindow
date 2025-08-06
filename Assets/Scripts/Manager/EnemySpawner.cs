@@ -21,10 +21,26 @@ public class EnemySpawner : MonoBehaviour
     private bool isSpawning;
     private int currentEnemyCount;
 
+    private GameManager gameManager;
+    private bool isActive;
+
+    private void Start()
+    {
+        gameManager = BootstrappedData.Instance.GameManager;
+        gameManager.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        gameManager.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
     private void Update()
     {
-        if (!isSpawning)
+        if (!isSpawning || !isActive)
+        {
             return;
+        }
 
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0 && enemySpawned < enemyToSpawn)
@@ -38,6 +54,10 @@ public class EnemySpawner : MonoBehaviour
 
     public void StartSpawning(int totalEnemy)
     {
+        if (!isActive)
+        {
+            return;
+        }
         enemyToSpawn = totalEnemy;
         enemySpawned = 0;
         spawnTimer = spawnInterval;
@@ -56,7 +76,6 @@ public class EnemySpawner : MonoBehaviour
 
         spawnedEnemyList.Add(enemy);
         enemySpawned++;
-        Debug.Log($"Spawned enemy {enemy.name}. Total spawned: {enemySpawned}/{enemyToSpawn}");
     }
 
     private void CheckAllEnemiesDied()
@@ -76,4 +95,14 @@ public class EnemySpawner : MonoBehaviour
     }
 
     public int GetCurrentEnemyCount() => currentEnemyCount;
+
+    private void HandleGameStateChanged(GameState newState)
+    {
+        isActive = newState == GameState.InGame;
+        if (!isActive)
+        {
+            isSpawning = false;
+            spawnedEnemyList.Clear();
+        }
+    }
 }

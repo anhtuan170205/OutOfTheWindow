@@ -23,6 +23,7 @@ public class Player : SingletonMonoBehaviour<Player>
     private void HandlePlayerDied()
     {
         Debug.Log("Player Died");
+        BootstrappedData.Instance.GameManager.GameOver();
     }
 
     public void TakeDamage(int damage)
