@@ -171,6 +171,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8706381708422261678, guid: 36fa12ddeab59400283c523ef15c6af4, type: 3}
+      propertyPath: shootSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 164e5157984e64bada87506418651f87, type: 3}
+    - target: {fileID: 8706381708422261678, guid: 36fa12ddeab59400283c523ef15c6af4, type: 3}
+      propertyPath: reloadSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4c13241b5460840fe88a6773cea61958, type: 3}
+    - target: {fileID: 8706381708422261678, guid: 36fa12ddeab59400283c523ef15c6af4, type: 3}
+      propertyPath: gameOverSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 590cea008f5fa4a168361849c6bd0946, type: 3}
+    - target: {fileID: 8706381708422261678, guid: 36fa12ddeab59400283c523ef15c6af4, type: 3}
+      propertyPath: explosionSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b63293799a734296bb683ef572ebcad, type: 3}
+    - target: {fileID: 8706381708422261678, guid: 36fa12ddeab59400283c523ef15c6af4, type: 3}
+      propertyPath: backgroundMainMenuMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 20f02ec7190f04ca9a587ffffc10f6ad, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -755,7 +775,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: press any key to start
+  m_text: press space to start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}

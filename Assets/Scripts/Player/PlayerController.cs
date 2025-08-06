@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 dashDirection;
     private float currentDashPool;
     public static event Action<float> OnDashPoolChanged;
+    public static event Action OnDashStarted;
 
     [Header("Player Grounded")]
     public bool Grounded = true;
@@ -124,6 +125,7 @@ public class PlayerController : MonoBehaviour
 
         isDashing = true;
         currentDashPool -= DashCost;
+        OnDashStarted?.Invoke();
         OnDashPoolChanged?.Invoke(currentDashPool);
         dashTimer = DashDuration;
         dashDirection = transform.forward;

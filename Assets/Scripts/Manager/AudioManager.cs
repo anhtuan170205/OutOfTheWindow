@@ -3,95 +3,153 @@ using System.Collections;
 
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
-    // [Header("Resources")]
-    // [SerializeField] private AudioClip backgroundNightMusic;
-    // [SerializeField] private AudioClip backgroundDayMusic;
-    // [SerializeField] private AudioClip shootSound;
-    // [SerializeField] private AudioClip reloadSound;
-    // [SerializeField] private AudioClip explosionSound;
-    // [SerializeField] private AudioClip levelCompleteSound;
-    // [SerializeField] private AudioClip gameOverSound;
-    // [SerializeField] private AudioClip dashSound;
+    [Header("Resources")]
+    [SerializeField] private AudioClip backgroundMainMenuMusic;
+    [SerializeField] private AudioClip backgroundNightMusic;
+    [SerializeField] private AudioClip backgroundDayMusic;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip reloadSound;
+    [SerializeField] private AudioClip explosionSound;
+    [SerializeField] private AudioClip levelCompleteSound;
+    [SerializeField] private AudioClip gameOverSound;
+    [SerializeField] private AudioClip dashSound;
 
-    // [Header("Audio Sources")]
-    // [SerializeField] private AudioSource sfxSource;
-    // [SerializeField] private AudioSource musicSource;
+    [Header("Audio Sources")]
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource musicSource;
 
-    // private void OnEnable()
-    // {
-    //     StartCoroutine(WaitForPlayerAndBind());
-    // }
+    private bool isPlayerSubscribed = false;
+    private Coroutine playerSubscribeCoroutine;
 
-    // private IEnumerator WaitForPlayerAndBind()
-    // {
-    //     yield return new WaitUntil(() =>
-    //         Player.Instance != null &&
-    //         Player.Instance.GetActiveWeapon() != null &&
-    //         Player.Instance.GetActiveWeapon().GetCurrentWeapon() != null &&
-    //         Player.Instance.GetHealth() != null &&
-    //         EnemySpawner.Instance != null
-    //     );
+    private GameManager gameManager;
+    private EnemySpawner enemySpawner;
+    private DayNightManager dayNightManager;
+    private Weapon currentWeapon;
+    private Health currentHealth;
 
-    //     GameManager.OnGameStateChanged += HandleGameStateChanged;
-    //     Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnShoot += PlayShootSound;
-    //     Player.Instance.GetHealth().OnPlayerDied += PlayGameOverSound;
-    //     EnemySpawner.Instance.OnEveryEnemyDied += PlayLevelCompleteSound;
-    //     Enemy.OnAnyEnemyDied += PlayExplosionSound;
-    //     PlayerController.OnDashPoolChanged += PlayDashSound;
-    // }
+    private void OnEnable()
+    {
+        gameManager = BootstrappedData.Instance.GameManager;
+        enemySpawner = BootstrappedData.Instance.TurnManager.EnemySpawner;
+        dayNightManager = BootstrappedData.Instance.TurnManager.DayNightManager;
 
-    // private void OnDisable()
-    // {
-    //     GameManager.OnGameStateChanged -= HandleGameStateChanged;
+        gameManager.OnGameStateChanged += HandleGameStateChanged;
+        enemySpawner.OnEveryEnemyDied += PlayLevelCompleteSound;
+        dayNightManager.OnDayNightStateChanged += HandleDayNightStateChanged;
+        Enemy.OnAnyEnemyDied += PlayExplosionSound;
+        PlayerController.OnDashStarted += PlayDashSound;
 
-    //     if (Player.Instance != null && Player.Instance.GetActiveWeapon()?.GetCurrentWeapon() != null)
-    //         Player.Instance.GetActiveWeapon().GetCurrentWeapon().OnShoot -= PlayShootSound;
+        HandleGameStateChanged(gameManager.CurrentGameState);
+    }
 
-    //     if (Player.Instance?.GetHealth() != null)
-    //         Player.Instance.GetHealth().OnPlayerDied -= PlayGameOverSound;
+    private void OnDisable()
+    {
+        gameManager.OnGameStateChanged -= HandleGameStateChanged;
+        enemySpawner.OnEveryEnemyDied -= PlayLevelCompleteSound;
+        dayNightManager.OnDayNightStateChanged -= HandleDayNightStateChanged;
+        Enemy.OnAnyEnemyDied -= PlayExplosionSound;
+        PlayerController.OnDashStarted -= PlayDashSound;
 
-    //     if (EnemySpawner.Instance != null)
-    //         EnemySpawner.Instance.OnEveryEnemyDied -= PlayLevelCompleteSound;
+        UnsubscribeFromPlayer();
+    }
 
-    //     Enemy.OnAnyEnemyDied -= PlayExplosionSound;
-    //     PlayerController.OnDashPoolChanged -= PlayDashSound;
-    // }
+    private void HandleGameStateChanged(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.MainMenu:
+                PlayBackgroundMusic(backgroundMainMenuMusic);
+                UnsubscribeFromPlayer();
+                break;
 
-    // private void HandleGameStateChanged(GameState newState)
-    // {
-    //     switch (newState)
-    //     {
-    //         case GameState.GameOver:
-    //             PlayGameOverSound();
-    //             break;
+            case GameState.InGame:
+                SubscribeToPlayer();
+                PlayBackgroundMusic(dayNightManager.CurrentState == DayNightState.Day
+                    ? backgroundDayMusic
+                    : backgroundNightMusic);
+                break;
 
-    //         case GameState.InGame:
-    //             PlayBackgroundMusic(DayNightManager.Instance.CurrentState == DayNightState.Day
-    //                 ? backgroundDayMusic
-    //                 : backgroundNightMusic);
-    //             break;
-    //     }
-    // }
+            case GameState.GameOver:
+                PlayGameOverSound();
+                UnsubscribeFromPlayer();
+                break;
 
-    // private void PlayBackgroundMusic(AudioClip clip)
-    // {
-    //     if (musicSource == null || clip == null) return;
+            default:
+                UnsubscribeFromPlayer();
+                break;
+        }
+    }
 
-    //     musicSource.clip = clip;
-    //     musicSource.loop = true;
-    //     musicSource.Play();
-    // }
+    private void HandleDayNightStateChanged(DayNightState state)
+    {
+        if (gameManager.CurrentGameState == GameState.InGame)
+        {
+            PlayBackgroundMusic(state == DayNightState.Day ? backgroundDayMusic : backgroundNightMusic);
+        }
+    }
 
-    // private void PlayShootSound() => PlaySFX(shootSound);
-    // private void PlayReloadSound() => PlaySFX(reloadSound);
-    // private void PlayExplosionSound(Enemy enemy) => PlaySFX(explosionSound);
-    // private void PlayGameOverSound() => PlaySFX(gameOverSound);
-    // private void PlayLevelCompleteSound() => PlaySFX(levelCompleteSound);
-    // private void PlayDashSound(float currentDashPool) => PlaySFX(dashSound);
+    private void SubscribeToPlayer()
+    {
+        if (isPlayerSubscribed || playerSubscribeCoroutine != null) return;
+        playerSubscribeCoroutine = StartCoroutine(WaitAndSubscribeToPlayer());
+    }
 
-    // private void PlaySFX(AudioClip clip)
-    // {
-    //     if (sfxSource == null || clip == null) return;
-    //     sfxSource.PlayOneShot(clip);
-    // }
+    private IEnumerator WaitAndSubscribeToPlayer()
+    {
+        yield return new WaitUntil(() =>
+            Player.Instance != null &&
+            Player.Instance.GetActiveWeapon()?.GetCurrentWeapon() != null &&
+            Player.Instance.GetHealth() != null
+        );
+
+        currentWeapon = Player.Instance.GetActiveWeapon().GetCurrentWeapon();
+        currentHealth = Player.Instance.GetHealth();
+
+        currentWeapon.OnShoot += PlayShootSound;
+        currentHealth.OnPlayerDied += PlayGameOverSound;
+
+        isPlayerSubscribed = true;
+        playerSubscribeCoroutine = null;
+    }
+
+    private void UnsubscribeFromPlayer()
+    {
+        if (!isPlayerSubscribed) return;
+
+        if (currentWeapon != null)
+            currentWeapon.OnShoot -= PlayShootSound;
+
+        if (currentHealth != null)
+            currentHealth.OnPlayerDied -= PlayGameOverSound;
+
+        currentWeapon = null;
+        currentHealth = null;
+        isPlayerSubscribed = false;
+
+        if (playerSubscribeCoroutine != null)
+        {
+            StopCoroutine(playerSubscribeCoroutine);
+            playerSubscribeCoroutine = null;
+        }
+    }
+
+    private void PlayBackgroundMusic(AudioClip clip)
+    {
+        musicSource.clip = clip;
+        musicSource.loop = true;
+        musicSource.volume = 0.25f;
+        musicSource.Play();
+    }
+
+    private void PlayShootSound() => PlaySFX(shootSound);
+    private void PlayReloadSound() => PlaySFX(reloadSound);
+    private void PlayExplosionSound(Enemy _) => PlaySFX(explosionSound);
+    private void PlayGameOverSound() => PlaySFX(gameOverSound);
+    private void PlayLevelCompleteSound() => PlaySFX(levelCompleteSound);
+    private void PlayDashSound() => PlaySFX(dashSound);
+
+    private void PlaySFX(AudioClip clip)
+    {
+        sfxSource.PlayOneShot(clip);
+    }
 }

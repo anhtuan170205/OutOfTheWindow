@@ -38,7 +38,7 @@ public abstract class Enemy : MonoBehaviour
     {
         player.GetMoneyWallet().AddMoney(moneyValue);
 
-        var spawner = turnManager.GetEnemySpawner();
+        var spawner = turnManager.EnemySpawner;
         spawner.SetEnemyCount(spawner.GetCurrentEnemyCount() - 1);
 
         GameObject vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity);

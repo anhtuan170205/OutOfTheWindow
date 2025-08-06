@@ -3,7 +3,7 @@ using System;
 
 public class DayNightManager : MonoBehaviour
 {
-    public event Action<DayNightState> OnStateChanged;
+    public event Action<DayNightState> OnDayNightStateChanged;
     private DayNightState currentState;
 
     public DayNightState CurrentState => currentState;
@@ -11,6 +11,6 @@ public class DayNightManager : MonoBehaviour
     public void SetState(DayNightState state)
     {
         currentState = state;
-        OnStateChanged?.Invoke(currentState);
+        OnDayNightStateChanged?.Invoke(currentState);
     }
 }

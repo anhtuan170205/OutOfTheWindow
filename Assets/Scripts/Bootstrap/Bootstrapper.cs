@@ -12,7 +12,7 @@ public class Bootstrapper : MonoBehaviour
 
     private void Update()
     {
-        if (!hasLoaded && Input.anyKeyDown)
+        if (!hasLoaded && Input.GetKeyDown(KeyCode.Space))
         {
             hasLoaded = true;
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);

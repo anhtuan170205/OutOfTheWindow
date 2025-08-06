@@ -47,7 +47,7 @@ public class HUDisplay : MonoBehaviour
         Bind();
 
         dayTimerText.gameObject.SetActive(true);
-        UpdateTime(turnManager.GetDayNightManager().CurrentState);
+        UpdateTime(turnManager.DayNightManager.CurrentState);
         UpdateEnemyCount(0);
         UpdateMoney(0);
     }
@@ -76,8 +76,8 @@ public class HUDisplay : MonoBehaviour
 
         turnManager.OnTurnChanged += UpdateDay;
         turnManager.OnDayTimerChanged += UpdateDayTimer;
-        turnManager.GetDayNightManager().OnStateChanged += UpdateTime;
-        turnManager.GetEnemySpawner().OnEnemyCountChanged += UpdateEnemyCount;
+        turnManager.DayNightManager.OnDayNightStateChanged += UpdateTime;
+        turnManager.EnemySpawner.OnEnemyCountChanged += UpdateEnemyCount;
 
         PlayerController.OnDashPoolChanged += UpdateDash;
 
@@ -108,8 +108,8 @@ public class HUDisplay : MonoBehaviour
 
         turnManager.OnTurnChanged -= UpdateDay;
         turnManager.OnDayTimerChanged -= UpdateDayTimer;
-        turnManager.GetDayNightManager().OnStateChanged -= UpdateTime;
-        turnManager.GetEnemySpawner().OnEnemyCountChanged -= UpdateEnemyCount;
+        turnManager.DayNightManager.OnDayNightStateChanged -= UpdateTime;
+        turnManager.EnemySpawner.OnEnemyCountChanged -= UpdateEnemyCount;
 
         PlayerController.OnDashPoolChanged -= UpdateDash;
     }
