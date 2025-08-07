@@ -1117,7 +1117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c24ec42f66ae407dbfa4e99eb3b9a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delayBetweenChars: 0
+  delayBetweenChars: 0.05
   fadeDuration: 0.1
   typingAudio: {fileID: 1570659664}
 --- !u!1 &1680059069
