@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
     private const float threshold = 0.01f;
 
     private bool IsCurrentDeviceMouse => true;
+    private bool isActive;
 
     private void Awake()
     {
@@ -96,6 +97,7 @@ public class PlayerController : MonoBehaviour
         input.LookEvent += OnLook;
         input.JumpEvent += OnJump;
         input.DashEvent += OnDash;
+        BootstrappedData.Instance.GameManager.OnGameStateChanged += HandleGameStateChanged;
     }
 
     private void OnDisable()
@@ -104,6 +106,7 @@ public class PlayerController : MonoBehaviour
         input.LookEvent -= OnLook;
         input.JumpEvent -= OnJump;
         input.DashEvent -= OnDash;
+        BootstrappedData.Instance.GameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
 
     private void OnMove(Vector2 newMoveDirection)
@@ -120,7 +123,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnDash()
     {
-        if (isDashing) return;
+        if (isDashing || !isActive) return;
         if (currentDashPool < DashCost) return;
 
         isDashing = true;
@@ -133,6 +136,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
         JumpAndGravity();
         GroundedCheck();
         Move();
@@ -142,6 +149,10 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!isActive)
+        {
+            return;
+        }
         CameraRotation();
     }
 
@@ -288,5 +299,10 @@ public class PlayerController : MonoBehaviour
             currentDashPool = Mathf.Min(currentDashPool, MaxDashCooldownPool);
             OnDashPoolChanged?.Invoke(currentDashPool);
         }
+    }
+
+    private void HandleGameStateChanged(GameState newState)
+    {
+        isActive = newState == GameState.InGame;
     }
 }

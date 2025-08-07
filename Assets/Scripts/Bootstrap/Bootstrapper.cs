@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Bootstrapper : MonoBehaviour
 {
+    [SerializeField] private AudioSource mouseClickSource;
     private bool hasLoaded = false;
 
     private void Start()
@@ -16,6 +17,7 @@ public class Bootstrapper : MonoBehaviour
         {
             hasLoaded = true;
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            mouseClickSource.Play();
         }
     }
 }

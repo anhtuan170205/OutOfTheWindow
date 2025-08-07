@@ -175,14 +175,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368eb8ff9c1314e68a843637550255c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundMainMenuMusic: {fileID: 8300000, guid: 20f02ec7190f04ca9a587ffffc10f6ad, type: 3}
   backgroundNightMusic: {fileID: 8300000, guid: 5db74a98e6ca14dd9a0f589cb4c7722d, type: 3}
   backgroundDayMusic: {fileID: 8300000, guid: ccb678ba7987b44a084df00b5d7d3cc2, type: 3}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  explosionSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: 164e5157984e64bada87506418651f87, type: 3}
+  reloadSound: {fileID: 8300000, guid: 4c13241b5460840fe88a6773cea61958, type: 3}
+  explosionSound: {fileID: 8300000, guid: 2b63293799a734296bb683ef572ebcad, type: 3}
   levelCompleteSound: {fileID: 8300000, guid: 960973c4e0e2f4068a1bcd9a65f5c815, type: 3}
-  gameOverSound: {fileID: 0}
+  gameOverSound: {fileID: 8300000, guid: 590cea008f5fa4a168361849c6bd0946, type: 3}
   dashSound: {fileID: 8300000, guid: 9d59120e5b7a3438aa53069bfca419b8, type: 3}
+  playerHitSound: {fileID: 8300000, guid: b89c891a298934b12bbb830eefbedef9, type: 3}
   sfxSource: {fileID: 1624008926882938262}
   musicSource: {fileID: 7622629415530090949}
 --- !u!1 &7927699498178860674

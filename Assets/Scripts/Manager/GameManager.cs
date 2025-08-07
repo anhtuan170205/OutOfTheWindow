@@ -72,11 +72,6 @@ public class GameManager : MonoBehaviour
         SceneLoader.QuitGame();
     }
 
-    private void Update()
-    {
-        Debug.Log($"[GameManager] Current Game State: {currentGameState}");
-    }
-
     public void GameOver()
     {
         nextGameState = GameState.GameOver;

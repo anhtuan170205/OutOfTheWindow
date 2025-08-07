@@ -192,9 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d61ee8bb8b64801995e1f78a916650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseEnemyCount: 10
+  baseEnemyCount: 5
   difficultyMultiplier: 1.2
   dayDuration: 15
-  dayNightManager: {fileID: 3401540213087344221}
-  lightingManager: {fileID: 8391676092920762708}
-  enemySpawner: {fileID: 8493733503292351909}

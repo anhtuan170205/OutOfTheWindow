@@ -89,7 +89,6 @@ public class ActiveWeapon : MonoBehaviour
             if (weapon is Rifle rifle && !rifle.IsUnlocked)
             {
                 rifle.Unlock();
-                Debug.Log("Rifle unlocked!");
                 return;
             }
         }

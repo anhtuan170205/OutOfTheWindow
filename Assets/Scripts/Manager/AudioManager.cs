@@ -13,6 +13,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     [SerializeField] private AudioClip levelCompleteSound;
     [SerializeField] private AudioClip gameOverSound;
     [SerializeField] private AudioClip dashSound;
+    [SerializeField] private AudioClip playerHitSound;
 
     [Header("Audio Sources")]
     [SerializeField] private AudioSource sfxSource;
@@ -56,7 +57,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     private void HandleGameStateChanged(GameState newState)
     {
         switch (newState)
-        {
+        {                
             case GameState.MainMenu:
                 PlayBackgroundMusic(backgroundMainMenuMusic);
                 UnsubscribeFromPlayer();
@@ -107,6 +108,9 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
         currentWeapon.OnShoot += PlayShootSound;
         currentHealth.OnPlayerDied += PlayGameOverSound;
+        currentWeapon.OnReload += PlayReloadSound;
+        Player.Instance.GetActiveWeapon().OnWeaponChanged += HandleWeaponChanged;
+        Player.Instance.OnPlayerDamaged += PlayPlayerHitSound;
 
         isPlayerSubscribed = true;
         playerSubscribeCoroutine = null;
@@ -116,11 +120,11 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     {
         if (!isPlayerSubscribed) return;
 
-        if (currentWeapon != null)
-            currentWeapon.OnShoot -= PlayShootSound;
-
-        if (currentHealth != null)
-            currentHealth.OnPlayerDied -= PlayGameOverSound;
+        currentWeapon.OnShoot -= PlayShootSound;
+        currentHealth.OnPlayerDied -= PlayGameOverSound;
+        currentWeapon.OnReload -= PlayReloadSound;
+        Player.Instance.GetActiveWeapon().OnWeaponChanged -= HandleWeaponChanged;
+        Player.Instance.OnPlayerDamaged -= PlayPlayerHitSound;
 
         currentWeapon = null;
         currentHealth = null;
@@ -130,6 +134,23 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         {
             StopCoroutine(playerSubscribeCoroutine);
             playerSubscribeCoroutine = null;
+        }
+    }
+
+    private void HandleWeaponChanged(Weapon newWeapon)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.OnShoot -= PlayShootSound;
+            currentWeapon.OnReload -= PlayReloadSound;
+        }
+
+        currentWeapon = newWeapon;
+
+        if (currentWeapon != null)
+        {
+            currentWeapon.OnShoot += PlayShootSound;
+            currentWeapon.OnReload += PlayReloadSound;
         }
     }
 
@@ -147,6 +168,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     private void PlayGameOverSound() => PlaySFX(gameOverSound);
     private void PlayLevelCompleteSound() => PlaySFX(levelCompleteSound);
     private void PlayDashSound() => PlaySFX(dashSound);
+    private void PlayPlayerHitSound(float _) => PlaySFX(playerHitSound);
 
     private void PlaySFX(AudioClip clip)
     {
