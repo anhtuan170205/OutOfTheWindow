@@ -866,7 +866,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 72c0723d3ce2d44db8afd889f7e93ff9, type: 3}
   m_Resource: {fileID: 8300000, guid: 72c0723d3ce2d44db8afd889f7e93ff9, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1025,8 +1025,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "So now you are here. \nYou don't know why.\nBut you are stuck in the cold
     steel body of a robot.\n\nFortunately,\nYour gun is still with you.\nFully reloaded.\n\nUnfortunately,\nYour
-    gun must do its work.\nWaves of robot is coming from ''The windows''\nThere is
-    no way out.\n\nYou must survive as long as possible.\n\nGood luck, Impostor."
+    gun must do its work.\nWaves of robot are coming from ''The windows''\nThere
+    is no way out.\n\nYou must survive as long as possible.\n\nGood luck, Impostor."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 542a596518dc24e01b93453805743d79, type: 2}
   m_sharedMaterial: {fileID: -5941180276759720564, guid: 542a596518dc24e01b93453805743d79, type: 2}
